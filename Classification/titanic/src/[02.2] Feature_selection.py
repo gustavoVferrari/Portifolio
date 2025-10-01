@@ -6,19 +6,18 @@ import json
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import seaborn as sns
 from scipy import stats
 from sklearn.pipeline import make_pipeline
-from sklearn.feature_selection import chi2, f_classif, SelectKBest
-from sklearn.model_selection import train_test_split
 import yaml
 
+# open yaml
 yaml_path = r"C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio\Classification\titanic\src\config.yaml"
 with open(yaml_path, "r", encoding="utf-8") as f:
     config = yaml.safe_load(f)
     
 
 def feature_selection(**params):
+    
     X_train = pd.read_parquet(params['X_train_feat_sel'])
     X_test = pd.read_parquet(params['X_test_feat_sel'])
     y_train = pd.read_parquet(params['y_train_feat_sel'])
@@ -28,9 +27,10 @@ def feature_selection(**params):
     
     
     y_train = y_train.astype('int')
-    # chi2_selector = SelectKBest(chi2, k="all")    
+
     chi_ls = []
 
+    # select only categorical features
     for feature in cols:
         print("Feature:", feature)
         # create contingency table
@@ -69,7 +69,7 @@ def feature_selection(**params):
         "feat_importance_chi2.png"
     )
 
-    print("Salvando em:", save_path)
+    print("Salvando plot em:", save_path)
     plt.savefig(save_path, dpi=300, bbox_inches="tight")
     plt.close()  # fecha a figura para evitar sobreposição em loops
 
@@ -100,19 +100,19 @@ def feature_selection(**params):
     
 if __name__ == "__main__":
     X_train_feat_sel = os.path.join(
-            config['feat_selection']['base_path'],
+            config['feat_selection']['path'],
             config['feat_selection']['X_train_file_name'])
     
     X_test_feat_sel = os.path.join(
-            config['feat_selection']['base_path'],
+            config['feat_selection']['path'],
             config['feat_selection']['X_test_file_name'])
     
     y_train_feat_sel = os.path.join(
-            config['feat_selection']['base_path'],
+            config['feat_selection']['path'],
             config['feat_selection']['y_train_file_name'])
     
     y_test_feat_sel = os.path.join(
-            config['feat_selection']['base_path'],
+            config['feat_selection']['path'],
             config['feat_selection']['y_test_file_name'])
     
     params = {        
@@ -120,9 +120,11 @@ if __name__ == "__main__":
         'X_test_feat_sel':X_test_feat_sel,
         'y_train_feat_sel':y_train_feat_sel,
         'y_test_feat_sel':y_test_feat_sel,
-        'save_plot':config['save_plots']['base_path'],
-        'save_report':config['save_reports']['base_path']
+        'save_plot':config['save_plots']['path_plot'],
+        'save_report':config['save_reports']['path_reports']
         }
     
+    print("carregando feature selection com os parametros:", params)
     feature_selection(**params)
+    print("feature selection finalizado")
     

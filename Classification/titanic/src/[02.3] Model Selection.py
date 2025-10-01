@@ -3,24 +3,18 @@ import sys
 sys.path.append(r'C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio/Classification/titanic')
 
 import os
-import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-import json
 from sklearn.pipeline import make_pipeline
 from sklearn.model_selection import StratifiedKFold
-
 from sklearn.ensemble import (
     RandomForestClassifier, 
     AdaBoostClassifier, 
     GradientBoostingClassifier, 
     HistGradientBoostingClassifier)
-
 from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import (
-    classification_report, 
-    confusion_matrix, 
     f1_score,     
     roc_auc_score)
 from sklearn.model_selection import GridSearchCV
@@ -32,7 +26,7 @@ import warnings
 warnings.filterwarnings('ignore')
 pd.set_option('display.float_format', '{:.4f}'.format)
 
-
+# carregar configurações
 yaml_path = r"C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio\Classification\titanic\src\config.yaml"
 with open(yaml_path, "r", encoding="utf-8") as f:
     config = yaml.safe_load(f)
@@ -221,19 +215,19 @@ def model_selection(**params):
     
 if __name__ == "__main__":
     X_train_feat_sel = os.path.join(
-            config['feat_selection']['base_path'],
+            config['feat_selection']['path'],
             config['feat_selection']['X_train_file_name'])
     
     X_test_feat_sel = os.path.join(
-            config['feat_selection']['base_path'],
+            config['feat_selection']['path'],
             config['feat_selection']['X_test_file_name'])
     
     y_train_feat_sel = os.path.join(
-            config['feat_selection']['base_path'],
+            config['feat_selection']['path'],
             config['feat_selection']['y_train_file_name'])
     
     y_test_feat_sel = os.path.join(
-            config['feat_selection']['base_path'],
+            config['feat_selection']['path'],
             config['feat_selection']['y_test_file_name'])
     
      
@@ -242,8 +236,8 @@ if __name__ == "__main__":
         'X_test_feat_sel': X_test_feat_sel,
         'y_train_feat_sel': y_train_feat_sel,
         'y_test_feat_sel': y_test_feat_sel,
-        'reports': config['save_reports']['base_path'],
-        'save_plot': config['save_plots']['base_path'],
+        'reports': config['save_reports']['path_reports'],
+        'save_plot': config['save_plots']['path_plot'],
         'score': config['model_selection']['score'],
         'test_size_size': 0.2,
         'random_state': 42,

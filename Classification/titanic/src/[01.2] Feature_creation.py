@@ -4,16 +4,15 @@ import os
 import yaml
 import numpy as np
 
-
+# Carregando o arquivo de configuração
 yaml_path = r"C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio\Classification\titanic\src\config.yaml"
-
 with open(yaml_path, "r", encoding="utf-8") as f:
     config = yaml.safe_load(f)
     
 
-def feature_creation(path_input, path_output):
+def feature_creation(input_data, output_data):
 
-    df = pd.read_csv(path_input)    
+    df = pd.read_csv(input_data)    
   
     print('Criando Features')
     df['Ticket'] = df['Ticket'].str.replace(r'[^A-Za-z0-9]', '', regex=True)
@@ -32,20 +31,21 @@ def feature_creation(path_input, path_output):
             'Age':np.float64, 
             'SibSp':np.float64,
             'Parch':np.float64
-            }
-    )
-    print('Salvando dados')
-    df.to_parquet(path_output)
+            })
+    
+    print('Salvando dados')    
+    df.to_parquet(output_data)
+    
     
 if __name__ == "__main__":
-    path_input=os.path.join(
-        config['input']['base_path'],
-        config['input']['file_name'])
+    input_data=os.path.join(
+        config['input_data']['path'],
+        config['input_data']['file_name'])
     
-    path_output=os.path.join(
-        config['output']['base_path'],
-        config['output']['file_name'])
+    output_data=os.path.join(
+        config['output_data']['path'],
+        config['output_data']['file_name'])
     
-    print(path_input)
-    feature_creation(path_input, path_output)
-    print(path_output)
+    print('Carregando função Feature Creation')
+    feature_creation(input_data, output_data)
+    print('Porcesso finalizado')

@@ -1,25 +1,23 @@
 ## Data gathering
-input:
-  base_path: "../dados_titanic/raw"
+input_data:
+  path: "../dados_titanic/raw"
   file_name: "train.csv"
 
-output:
-  base_path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic/dados_titanic/processed'
+output_data:
+  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic/dados_titanic/processed'
   file_name: "train.parquet"
 
-save_plots:
-  base_path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic/plots'
+## feat engineering
+pipe_feat_eng:
+  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic/models'
 
 ## Feature selection
 input_feat_selection:
-  base_path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic/dados_titanic/processed'
+  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic/dados_titanic/processed'
   file_name: "train.parquet"
 
-save_reports:
-  base_path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic/dados_titanic/reports'
-
 feat_selection:
-  base_path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic/dados_titanic/processed'
+  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic/dados_titanic/processed'
   X_train_file_name: "feat_X_train.parquet"
   X_test_file_name: "feat_X_test.parquet"
   y_train_file_name: "feat_y_train.parquet"
@@ -48,5 +46,22 @@ feat_selection_params:
     - Fare
   target: 
     - Survived
+
+## Model selection
 model_selection:
   score: 'roc_auc'
+model:
+  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic/models'
+
+## Model
+train_model: 
+  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/dados_titanic/processed'
+
+## Save reports
+save_reports:
+  path_reports: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic/dados_titanic/reports'
+  path_plot: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic/plots'
+
+## Prediction
+output_predict:
+  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic/dados_titanic/processed'
