@@ -237,7 +237,7 @@ if __name__ == "__main__":
         'y_train_feat_sel': y_train_feat_sel,
         'y_test_feat_sel': y_test_feat_sel,
         'reports': config['save_reports']['path_reports'],
-        'save_plot': config['save_plots']['path_plot'],
+        'save_plot': config['save_reports']['path_plot'],
         'score': config['model_selection']['score'],
         'test_size_size': 0.2,
         'random_state': 42,

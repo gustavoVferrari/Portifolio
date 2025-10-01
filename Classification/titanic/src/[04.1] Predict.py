@@ -34,7 +34,7 @@ def predict(**params):
         'report.json'
     )
         
-    with open(remove_cols, "rb") as file:
+    with open(remove_cols, "r") as file:
         cols_2_drop = json.load(file)
         
         
@@ -58,19 +58,19 @@ def predict(**params):
 if __name__ == "__main__":
         
     X_test_feat_sel = os.path.join(
-            config['feat_selection']['base_path'],
+            config['feat_selection']['path'],
             config['feat_selection']['X_test_file_name'])   
     
     y_test_feat_sel = os.path.join(
-            config['feat_selection']['base_path'],
+            config['feat_selection']['path'],
             config['feat_selection']['y_test_file_name'])
     
     params_ = {
         'X_test_feat_sel': X_test_feat_sel,
         'y_test_feat_sel': y_test_feat_sel,
-        'model': config['model']['base_path'],
-        'predictions': config['output_predict']['base_path'],
-        'removed_cols': config['save_reports']['base_path'],
+        'model': config['model']['path'],
+        'predictions': config['output_predict']['path'],
+        'removed_cols': config['save_reports']['path_reports'],
         }
     
     predict(**params_)

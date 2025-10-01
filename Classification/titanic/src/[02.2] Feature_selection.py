@@ -120,7 +120,7 @@ if __name__ == "__main__":
         'X_test_feat_sel':X_test_feat_sel,
         'y_train_feat_sel':y_train_feat_sel,
         'y_test_feat_sel':y_test_feat_sel,
-        'save_plot':config['save_plots']['path_plot'],
+        'save_plot':config['save_reports']['path_plot'],
         'save_report':config['save_reports']['path_reports']
         }
     

@@ -55,7 +55,9 @@ model:
 
 ## Model
 train_model: 
-  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/dados_titanic/processed'
+  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic/dados_titanic/processed'
+  model_params: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic/dados_titanic/reports'
+
 
 ## Save reports
 save_reports:

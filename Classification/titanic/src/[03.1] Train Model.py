@@ -14,7 +14,6 @@ from sklearn.ensemble import (
 from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import (
     classification_report, 
-    confusion_matrix, 
     f1_score,     
     roc_auc_score)
 import yaml
@@ -31,12 +30,8 @@ with open(yaml_path, "r", encoding="utf-8") as f:
 
 def train_model(**params):
     X_train = pd.read_parquet(params_['X_train_feat_sel'])
-    X_test = pd.read_parquet(params_['X_test_feat_sel'])
-    y_train = pd.read_parquet(params_['y_train_feat_sel'])
-    y_test = pd.read_parquet(params_['y_test_feat_sel']) 
-    
+    y_train = pd.read_parquet(params_['y_train_feat_sel'])    
     y_train = y_train.astype('int')
-    y_test = y_test.astype('int')
     
     seed_ = params_['random_state']
     
@@ -77,7 +72,7 @@ def train_model(**params):
     
     print("Salvando pkl do Modelo")
     model_path = os.path.join(
-        config['model']['base_path'],
+        config['model']['path'],
         'model.pkl')
     
     with open(model_path, 'wb') as arquivo:
@@ -93,14 +88,15 @@ def train_model(**params):
     dict_score['classificatio_report'] = classification_report(
         y_train,
         y_pred_train,
-        output_dict=True)
+        output_dict=True)    
     
+    print(dict_score)
     
     metrics_path = os.path.join(
         params_['report'],
         'train_model_metrics.json'
     )
-    with open(metrics_path, 'wb') as arquivo:
+    with open(metrics_path, 'w') as arquivo:
         json.dump(dict_score, arquivo)
     
     
@@ -128,6 +124,7 @@ if __name__ == "__main__":
         'y_proba_train_path': y_proba_train_path,
         'report': config['save_reports']['path_reports'],
         'model': config['model']['path'],
+        'model_params': config['train_model']['model_params'],
         'random_state': 42,
         }
     
