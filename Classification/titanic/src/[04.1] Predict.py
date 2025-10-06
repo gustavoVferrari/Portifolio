@@ -29,16 +29,16 @@ def predict(**params):
     with open(model_path, "rb") as file:
         model = pickle.load(file)
         
-    remove_cols = os.path.join(
-        params_['removed_cols'],
-        'report.json'
-    )
+    # remove_cols = os.path.join(
+    #     params_['removed_cols'],
+    #     'report.json'
+    # )
         
-    with open(remove_cols, "r") as file:
-        cols_2_drop = json.load(file)
+    # with open(remove_cols, "r") as file:
+    #     cols_2_drop = json.load(file)
         
         
-    X_test = X_test.drop(columns=cols_2_drop['removed_variables'])
+    # X_test = X_test.drop(columns=cols_2_drop['removed_variables'])
         
     preds = model.predict(X_test)
     proba = model.predict_proba(X_test)[:, 1]
@@ -72,5 +72,6 @@ if __name__ == "__main__":
         'predictions': config['output_predict']['path'],
         'removed_cols': config['save_reports']['path_reports'],
         }
-    
+    print("Começar processo de predicao...")
     predict(**params_)
+    print("Dados previstos com sucesso...")

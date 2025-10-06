@@ -1,11 +1,14 @@
 ## Data gathering
 input_data:
   path: "../dados_titanic/raw"
-  file_name: "train.csv"
+  file_name_train: "train.csv"
+  file_name_test: "test.csv"
+
 
 output_data:
   path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic/dados_titanic/processed'
-  file_name: "train.parquet"
+  file_name_train: "train.parquet"
+  file_name_test: "test.parquet"
 
 ## feat engineering
 pipe_feat_eng:

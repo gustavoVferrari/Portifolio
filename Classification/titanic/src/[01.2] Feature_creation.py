@@ -27,7 +27,6 @@ def feature_creation(input_data, output_data):
     df = df.astype(
         {
             'Pclass':str, 
-            'Survived':'str', 
             'Age':np.float64, 
             'SibSp':np.float64,
             'Parch':np.float64
@@ -38,14 +37,23 @@ def feature_creation(input_data, output_data):
     
     
 if __name__ == "__main__":
-    input_data=os.path.join(
+    input_train_data=os.path.join(
         config['input_data']['path'],
-        config['input_data']['file_name'])
+        config['input_data']['file_name_train'])
     
-    output_data=os.path.join(
+    output_train_data=os.path.join(
         config['output_data']['path'],
-        config['output_data']['file_name'])
+        config['output_data']['file_name_train'])
+    
+    input_test_data=os.path.join(
+        config['input_data']['path'],
+        config['input_data']['file_name_test'])
+    
+    output_test_data=os.path.join(
+        config['output_data']['path'],
+        config['output_data']['file_name_test'])
     
     print('Carregando função Feature Creation')
-    feature_creation(input_data, output_data)
+    feature_creation(input_train_data, output_train_data)
+    feature_creation(input_test_data, output_test_data)
     print('Porcesso finalizado')
