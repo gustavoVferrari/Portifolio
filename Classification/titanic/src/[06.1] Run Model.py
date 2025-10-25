@@ -14,7 +14,8 @@ SCRIPTS_TO_RUN = [
     '[02.2] Feature_selection.py',
     '[02.3] Model Selection.py',
     '[03.1] Train Model.py',
-    '[04.1] Predict.py'    
+    '[04.1] Predict.py',
+    '[05.2] Submission.py'    
 ]
 
 def run_script_safely(path, script_path):    
