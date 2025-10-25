@@ -33,12 +33,12 @@ with open(yaml_path, "r", encoding="utf-8") as f:
 
 def model_selection(**params): 
     X_train = pd.read_parquet(params_['X_train_feat_sel'])
-    X_test = pd.read_parquet(params_['X_test_feat_sel'])
+    X_val = pd.read_parquet(params_['X_val_feat_sel'])
     y_train = pd.read_parquet(params_['y_train_feat_sel'])
-    y_test = pd.read_parquet(params_['y_test_feat_sel']) 
+    y_val = pd.read_parquet(params_['y_val_feat_sel']) 
     
     y_train = y_train.astype('int')
-    y_test = y_test.astype('int')
+    y_val = y_val.astype('int')
     seed_ = params_['random_state']
     
     models = dict(
@@ -102,12 +102,12 @@ def model_selection(**params):
         
         grid_fit = grid.fit(X_train, y_train)
         
-        pred_proba_test = grid.predict_proba(X_test)[:,1]
-        pred_test = grid.predict(X_test)
+        pred_proba_test = grid.predict_proba(X_val)[:,1]
+        pred_test = grid.predict(X_val)
         
         dict_metrics[model] = [
-            f1_score(y_test, pred_test), 
-            roc_auc_score(y_test, pred_proba_test)
+            f1_score(y_val, pred_test), 
+            roc_auc_score(y_val, pred_proba_test)
             ] 
         
         # Best params    
@@ -189,7 +189,7 @@ def model_selection(**params):
         "cv_score.png"
     )
     
-    print(f'score at test dataset {dict_fit[best_fold].score(X_test, y_test)}')
+    print(f'score at test dataset {dict_fit[best_fold].score(X_val, y_val)}')
     
     sns.pointplot(
         data=df_score, 
@@ -206,8 +206,8 @@ def model_selection(**params):
         sns.histplot(data=tmp,x='escore', hue='Survived')
         plt.title(f'Fold : {fold}')
         save_path = os.path.join(
-        params_['save_plot'],
-        f"separation_plane_{fold}.png")
+            params_['save_plot'],
+            f"separation_plane_{fold}.png")
         plt.savefig(save_path, dpi=300, bbox_inches="tight")
         plt.close() 
 
@@ -216,30 +216,29 @@ def model_selection(**params):
 if __name__ == "__main__":
     X_train_feat_sel = os.path.join(
             config['feat_selection']['path'],
-            config['feat_selection']['X_train_file_name'])
+            config['feat_selection']['X_train_file'])
     
-    X_test_feat_sel = os.path.join(
+    X_val_feat_sel = os.path.join(
             config['feat_selection']['path'],
-            config['feat_selection']['X_test_file_name'])
+            config['feat_selection']['X_val_file'])
     
     y_train_feat_sel = os.path.join(
             config['feat_selection']['path'],
-            config['feat_selection']['y_train_file_name'])
+            config['feat_selection']['y_train_file'])
     
-    y_test_feat_sel = os.path.join(
+    y_val_feat_sel = os.path.join(
             config['feat_selection']['path'],
-            config['feat_selection']['y_test_file_name'])
+            config['feat_selection']['y_val_file'])
     
      
     params_ = {        
         'X_train_feat_sel': X_train_feat_sel,
-        'X_test_feat_sel': X_test_feat_sel,
+        'X_val_feat_sel': X_val_feat_sel,
         'y_train_feat_sel': y_train_feat_sel,
-        'y_test_feat_sel': y_test_feat_sel,
+        'y_val_feat_sel': y_val_feat_sel,
         'reports': config['save_reports']['path_reports'],
         'save_plot': config['save_reports']['path_plot'],
         'score': config['model_selection']['score'],
-        'test_size_size': 0.2,
         'random_state': 42,
         'cv': 5
         }

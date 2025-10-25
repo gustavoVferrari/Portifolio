@@ -1,34 +1,32 @@
 ## Data gathering
-input_data:
-  path: "../dados_titanic/raw"
-  file_name_train: "train.csv"
-  file_name_test: "test.csv"
+data_gathering:
+  path: "C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic/dados_titanic/raw"
+  file_train: "train.csv"
+  file_test: "test.csv"
+  competition: "titanic"
 
 
 output_data:
   path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic/dados_titanic/processed'
-  file_name_train: "train.parquet"
-  file_name_test: "test.parquet"
+  file_train: "train.parquet"
+  file_test: "test.parquet"
 
 ## feat engineering
 pipe_feat_eng:
   path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic/models'
 
 ## Feature selection
-input_feat_selection:
-  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic/dados_titanic/processed'
-  file_name: "train.parquet"
-
 feat_selection:
   path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic/dados_titanic/processed'
-  X_train_file_name: "feat_X_train.parquet"
-  X_test_file_name: "feat_X_test.parquet"
-  y_train_file_name: "feat_y_train.parquet"
-  y_test_file_name: "feat_y_test.parquet"
+  input_file: "train.parquet"
+  X_train_file: "feat_X_train.parquet"
+  X_val_file: "feat_X_val.parquet"
+  y_train_file: "feat_y_train.parquet"
+  y_val_file: "feat_y_val.parquet"
 
 feat_selection_params:
   random_state: 23
-  teste_size: 0.25
+  val_size: 0.25
   cols_2_drop:
     - PassengerId
   cat_var:
@@ -70,3 +68,7 @@ save_reports:
 ## Prediction
 output_predict:
   path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic/dados_titanic/processed'
+
+## Submission
+submission:
+  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic/dados_titanic/submission'

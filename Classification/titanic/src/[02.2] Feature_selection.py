@@ -19,12 +19,11 @@ with open(yaml_path, "r", encoding="utf-8") as f:
 def feature_selection(**params):
     
     X_train = pd.read_parquet(params['X_train_feat_sel'])
-    X_test = pd.read_parquet(params['X_test_feat_sel'])
+    X_val = pd.read_parquet(params['X_val_feat_sel'])
     y_train = pd.read_parquet(params['y_train_feat_sel'])
-    y_test = pd.read_parquet(params['y_test_feat_sel'])
+    y_val = pd.read_parquet(params['y_val_feat_sel'])
     
-    cols = X_train.filter(like='categorical').columns.tolist()
-    
+    cols = X_train.filter(like='categorical').columns.tolist()    
     
     y_train = y_train.astype('int')
 
@@ -69,7 +68,7 @@ def feature_selection(**params):
         "feat_importance_chi2.png"
     )
 
-    print("Salvando plot em:", save_path)
+    print("Saving plot:", save_path)
     plt.savefig(save_path, dpi=300, bbox_inches="tight")
     plt.close()  # fecha a figura para evitar sobreposição em loops
 
@@ -79,14 +78,14 @@ def feature_selection(**params):
     remove = chi[chi > 0.05].index
 
     X_train.drop(remove, axis=1, inplace=True)
-    X_test.drop(remove, axis=1, inplace=True)
+    X_val.drop(remove, axis=1, inplace=True)
     
     X_train.to_parquet(params['X_train_feat_sel'])
-    X_test.to_parquet(params['X_test_feat_sel'])
+    X_val.to_parquet(params['X_val_feat_sel'])
     
-    print("Variaveis removidas:", remove.tolist())
-    print("Novas dimensões do X_train:", X_train.shape)
-    print('Variaveis mantidas:', X_train.columns.tolist())
+    print("features removed:", remove.tolist())
+    print("X_train new shape:", X_train.shape)
+    print('features:', X_train.columns.tolist())
     
     report = {
         'removed_variables': remove.tolist(),
@@ -101,30 +100,30 @@ def feature_selection(**params):
 if __name__ == "__main__":
     X_train_feat_sel = os.path.join(
             config['feat_selection']['path'],
-            config['feat_selection']['X_train_file_name'])
+            config['feat_selection']['X_train_file'])
     
-    X_test_feat_sel = os.path.join(
+    X_val_feat_sel = os.path.join(
             config['feat_selection']['path'],
-            config['feat_selection']['X_test_file_name'])
+            config['feat_selection']['X_val_file'])
     
     y_train_feat_sel = os.path.join(
             config['feat_selection']['path'],
-            config['feat_selection']['y_train_file_name'])
+            config['feat_selection']['y_train_file'])
     
-    y_test_feat_sel = os.path.join(
+    y_val_feat_sel = os.path.join(
             config['feat_selection']['path'],
-            config['feat_selection']['y_test_file_name'])
+            config['feat_selection']['y_val_file'])
     
     params = {        
         'X_train_feat_sel':X_train_feat_sel,
-        'X_test_feat_sel':X_test_feat_sel,
+        'X_val_feat_sel':X_val_feat_sel,
         'y_train_feat_sel':y_train_feat_sel,
-        'y_test_feat_sel':y_test_feat_sel,
+        'y_val_feat_sel':y_val_feat_sel,
         'save_plot':config['save_reports']['path_plot'],
         'save_report':config['save_reports']['path_reports']
         }
     
-    print("carregando feature selection com os parametros:", params)
+    print("Load feature selection:", params)
     feature_selection(**params)
-    print("feature selection finalizado")
+    print("feature selection completed")
     

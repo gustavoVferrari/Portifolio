@@ -1,8 +1,12 @@
+import sys
+sys.path.append(r'C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio/Classification/titanic')
+
 import pandas as pd
 import regex
 import os
 import yaml
 import numpy as np
+
 
 # Carregando o arquivo de configuração
 yaml_path = r"C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio\Classification\titanic\src\config.yaml"
@@ -37,23 +41,23 @@ def feature_creation(input_data, output_data):
     
     
 if __name__ == "__main__":
-    input_train_data=os.path.join(
-        config['input_data']['path'],
-        config['input_data']['file_name_train'])
+    input_train=os.path.join(
+        config['data_gathering']['path'],
+        config['data_gathering']['file_train'])
     
-    output_train_data=os.path.join(
+    output_train=os.path.join(
         config['output_data']['path'],
-        config['output_data']['file_name_train'])
+        config['output_data']['file_train'])
     
-    input_test_data=os.path.join(
-        config['input_data']['path'],
-        config['input_data']['file_name_test'])
+    input_test=os.path.join(
+        config['data_gathering']['path'],
+        config['data_gathering']['file_test'])
     
-    output_test_data=os.path.join(
+    output_test=os.path.join(
         config['output_data']['path'],
-        config['output_data']['file_name_test'])
+        config['output_data']['file_test'])
     
     print('Carregando função Feature Creation')
-    feature_creation(input_train_data, output_train_data)
-    feature_creation(input_test_data, output_test_data)
+    feature_creation(input_train, output_train)
+    feature_creation(input_test, output_test)
     print('Porcesso finalizado')

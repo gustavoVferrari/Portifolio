@@ -2,7 +2,6 @@ import sys
 sys.path.append(r'C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio/Classification/titanic')
 import os
 import pickle
-import numpy as np
 import pandas as pd
 import json
 from sklearn.pipeline import make_pipeline
@@ -56,7 +55,7 @@ def train_model(**params):
     clf_model = models[best_model][0]
     clf_model.set_params(**dict_params, random_state=seed_)
     
-    print("Treinando o modelo")
+    print("train model")
     clf_model.fit(X_train, y_train)
     
     y_pred_train = clf_model.predict(X_train)
@@ -70,16 +69,16 @@ def train_model(**params):
         )    
   
     
-    print("Salvando pkl do Modelo")
+    print("saving model pkl")
     model_path = os.path.join(
         config['model']['path'],
         'model.pkl')
     
     with open(model_path, 'wb') as arquivo:
         pickle.dump(clf_model, arquivo)
-    print(f"Modelo salvo com sucesso")
+    print(f"Model saved")
     
-    print('score de treino:')
+    print('Train score:')
     
     dict_score = {}
     dict_score['f1'] = f1_score(y_train, y_pred_train)
@@ -103,11 +102,11 @@ def train_model(**params):
 if __name__ == "__main__":
     X_train_feat_sel = os.path.join(
             config['feat_selection']['path'],
-            config['feat_selection']['X_train_file_name'])
+            config['feat_selection']['X_train_file'])
         
     y_train_feat_sel = os.path.join(
             config['feat_selection']['path'],
-            config['feat_selection']['y_train_file_name'])
+            config['feat_selection']['y_train_file'])
     
     y_pred_train_path = os.path.join(
             config['train_model']['path'],

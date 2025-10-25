@@ -18,9 +18,9 @@ with open(yaml_path, "r", encoding="utf-8") as f:
     
     
 def predict(**params):
-    X_test = pd.read_parquet(params_['X_test_feat_sel'])
-    y_test = pd.read_parquet(params_['y_test_feat_sel']) 
-    y_test = y_test.astype('int')      
+    X_val = pd.read_parquet(params_['X_val_feat_sel'])
+    y_val = pd.read_parquet(params_['y_val_feat_sel']) 
+    y_val = y_val.astype('int')      
  
     model_path = os.path.join(
         params_['model'],
@@ -40,10 +40,10 @@ def predict(**params):
         
     # X_test = X_test.drop(columns=cols_2_drop['removed_variables'])
         
-    preds = model.predict(X_test)
-    proba = model.predict_proba(X_test)[:, 1]
+    preds = model.predict(X_val)
+    proba = model.predict_proba(X_val)[:, 1]
     
-    results = pd.DataFrame(y_test).copy()
+    results = pd.DataFrame(y_val).copy()
     results['preds'] = preds
     results['proba'] = proba
     
@@ -57,21 +57,21 @@ def predict(**params):
 
 if __name__ == "__main__":
         
-    X_test_feat_sel = os.path.join(
+    X_val_feat_sel = os.path.join(
             config['feat_selection']['path'],
-            config['feat_selection']['X_test_file_name'])   
+            config['feat_selection']['X_val_file'])   
     
-    y_test_feat_sel = os.path.join(
+    y_val_feat_sel = os.path.join(
             config['feat_selection']['path'],
-            config['feat_selection']['y_test_file_name'])
+            config['feat_selection']['y_val_file'])
     
     params_ = {
-        'X_test_feat_sel': X_test_feat_sel,
-        'y_test_feat_sel': y_test_feat_sel,
+        'X_val_feat_sel': X_val_feat_sel,
+        'y_val_feat_sel': y_val_feat_sel,
         'model': config['model']['path'],
         'predictions': config['output_predict']['path'],
         'removed_cols': config['save_reports']['path_reports'],
         }
-    print("Começar processo de predicao...")
+    print("Begins predict...")
     predict(**params_)
-    print("Dados previstos com sucesso...")
+    print("data saved...")

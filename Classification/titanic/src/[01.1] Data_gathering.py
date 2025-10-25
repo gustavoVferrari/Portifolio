@@ -1,20 +1,37 @@
+# read data from kaggle
 from kaggle.api.kaggle_api_extended import KaggleApi
 import os
-# Autenticar
+import yaml
+import zipfile
+
+# Authetication
 api = KaggleApi()
 api.authenticate()
 
-path = r'C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio\Classification\titanic\dados_titanic\raw'
-# Fazer download dos arquivos da competição 'titanic'
-api.competition_download_files('titanic', path=path)
+# Carregando o arquivo de configuração
+yaml_path = r"C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio\Classification\titanic\src\config.yaml"
+with open(yaml_path, "r", encoding="utf-8") as f:
+    config = yaml.safe_load(f)
 
-print("Download concluído!")
 
-import zipfile
+def Data_gatheting(**params):
 
-print('descomnpactar dados')
+    print("Begin Download!")
+    api.competition_download_files(params['competition'], path=params['data_gathering_path'])
+    print("Download completed!")
+    
 
-path_zip = os.path.join(path, 'titanic.zip')
-with zipfile.ZipFile(path_zip, 'r') as zip_ref:
-    zip_ref.extractall(path)    
-print('dados descompactados')
+    print('unzip data')
+    path_zip = os.path.join(params['data_gathering_path'], f'{params['competition']}.zip')
+    with zipfile.ZipFile(path_zip, 'r') as zip_ref:
+        zip_ref.extractall(params['data_gathering_path'])    
+    print('data unziped')
+    
+    
+if __name__ == "__main__":
+    
+    params = {
+        'competition': config['data_gathering']['competition'],
+        'data_gathering_path': config['data_gathering']['path']
+    }
+    Data_gatheting(**params)

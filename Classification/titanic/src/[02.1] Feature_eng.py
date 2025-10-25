@@ -17,29 +17,29 @@ with open(yaml_path, "r", encoding="utf-8") as f:
 
 def run_feature_eng(**params):
     
-    print('Iniciando o processo de Feature Eng')
-    df = pd.read_parquet(params['input_feat_sel'])
+    print('Begin Feature Eng')
+    df = pd.read_parquet(params['input_data'])
     df.drop(
         columns=params['cols_2_drop'], 
         inplace=True)
     
-    print('Dividindo os dados em treino e teste')
-    X_train, X_test, y_train, y_test =  train_test_split(
+    print('Split data into train and validation')
+    X_train, X_val, y_train, y_val =  train_test_split(
         df.drop(columns=params['target']), 
         df[params['target']],
-        test_size=params['test_size'], 
+        test_size=params['val_size'], 
         random_state=params['random_state'])
     
     pipe = feat_eng_pipeline(
         numerical_var=params['num_var'], 
         categorical_var=params['cat_var'])
     
-    print('Treinando o pipe de Feature Eng')
+    print('Feature Eng pipe transform')
     pipe.fit(X_train, y_train)
     X_train_trans = pipe.transform(X_train)
-    X_test_trans = pipe.transform(X_test)
+    X_val_trans = pipe.transform(X_val)
 
-    print('Salvando os dados transformados e o pipe')
+    print('Save data transform')
     pipe_to_save = os.path.join(
         params['pipe'],
         'pipe.pkl'
@@ -49,47 +49,47 @@ def run_feature_eng(**params):
         pickle.dump(pipe, arquivo)
     
     X_train_trans.to_parquet(params['output_x_train'])
-    X_test_trans.to_parquet(params['output_x_test'])
+    X_val_trans.to_parquet(params['output_x_val'])
     pd.DataFrame(y_train).to_parquet(params['output_y_train'])
-    pd.DataFrame(y_test).to_parquet(params['output_y_test'])
+    pd.DataFrame(y_val).to_parquet(params['output_y_val'])
     
-    print('Processo de Feature Eng rodado com sucesso')
+    print('Feature Eng completed with sucess')
     
     
 if __name__ == "__main__":
-    input_feat_sel=os.path.join(
-            config['input_feat_selection']['path'],
-            config['input_feat_selection']['file_name'])
+    input_data=os.path.join(
+            config['feat_selection']['path'],
+            config['feat_selection']['input_file'])
     
     output_X_train = os.path.join(
             config['feat_selection']['path'],
-            config['feat_selection']['X_train_file_name'])
+            config['feat_selection']['X_train_file'])
     
-    output_X_test = os.path.join(
+    output_X_val = os.path.join(
             config['feat_selection']['path'],
-            config['feat_selection']['X_test_file_name'])
+            config['feat_selection']['X_val_file'])
     
     output_y_train = os.path.join(
             config['feat_selection']['path'],
-            config['feat_selection']['y_train_file_name'])
+            config['feat_selection']['y_train_file'])
     
-    output_y_test = os.path.join(
+    output_y_val = os.path.join(
             config['feat_selection']['path'],
-            config['feat_selection']['y_test_file_name'])
+            config['feat_selection']['y_val_file'])
     
     params = {
-        'input_feat_sel':input_feat_sel,
-        'random_state':config['feat_selection_params']['random_state'],
-        'test_size':config['feat_selection_params']['teste_size'],
-        'cols_2_drop':config['feat_selection_params']['cols_2_drop'],
-        'num_var':config['feat_selection_params']['num_var'],
-        'cat_var':config['feat_selection_params']['cat_var'],
-        'target':config['feat_selection_params']['target'],
+        'input_data' : input_data,
+        'random_state' : config['feat_selection_params']['random_state'],
+        'val_size' : config['feat_selection_params']['val_size'],
+        'cols_2_drop' : config['feat_selection_params']['cols_2_drop'],
+        'num_var' : config['feat_selection_params']['num_var'],
+        'cat_var' : config['feat_selection_params']['cat_var'],
+        'target' : config['feat_selection_params']['target'],
         'pipe': config['pipe_feat_eng']['path'],
-        'output_x_train':output_X_train,
-        'output_x_test':output_X_test,
-        'output_y_train':output_y_train,
-        'output_y_test':output_y_test,
+        'output_x_train' : output_X_train,
+        'output_x_val' : output_X_val,
+        'output_y_train' : output_y_train,
+        'output_y_val' : output_y_val,
         }
     
     run_feature_eng(**params)
