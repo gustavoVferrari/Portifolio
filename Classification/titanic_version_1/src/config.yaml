@@ -1,23 +1,23 @@
 ## Data gathering
 data_gathering:
-  path: "C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic/dados_titanic/raw"
+  path: "C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic_version_1/dados_titanic/raw"
   file_train: "train.csv"
   file_test: "test.csv"
   competition: "titanic"
 
 
 output_data:
-  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic/dados_titanic/processed'
+  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic_version_1/dados_titanic/processed'
   file_train: "train.parquet"
   file_test: "test.parquet"
 
 ## feat engineering
 pipe_feat_eng:
-  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic/models'
+  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic_version_1/models'
 
 ## Feature selection
 feat_selection:
-  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic/dados_titanic/processed'
+  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic_version_1/dados_titanic/processed'
   input_file: "train.parquet"
   X_train_file: "feat_X_train.parquet"
   X_val_file: "feat_X_val.parquet"
@@ -26,6 +26,7 @@ feat_selection:
 
 feat_selection_params:
   random_state: 23
+  pca_threshold: 0.95
   val_size: 0.25
   cols_2_drop:
     - PassengerId
@@ -52,23 +53,23 @@ feat_selection_params:
 model_selection:
   score: 'roc_auc'
 model:
-  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic/models'
+  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic_version_1/models'
 
 ## Model
 train_model: 
-  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic/dados_titanic/processed'
-  model_params: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic/dados_titanic/reports'
+  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic_version_1/dados_titanic/processed'
+  model_params: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic_version_1/dados_titanic/reports'
 
 
 ## Save reports
 save_reports:
-  path_reports: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic/dados_titanic/reports'
-  path_plot: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic/plots'
+  path_reports: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic_version_1/dados_titanic/reports'
+  path_plot: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic_version_1/plots'
 
 ## Prediction
 output_predict:
-  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic/dados_titanic/processed'
+  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic_version_1/dados_titanic/processed'
 
 ## Submission
 submission:
-  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic/dados_titanic/submission'
+  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic_version_1/dados_titanic/submission'

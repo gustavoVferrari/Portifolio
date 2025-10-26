@@ -1,1 +1,1 @@
-{"rf":{"criterion":"entropy","max_depth":5,"min_samples_split":6,"n_estimators":250}}
+{"gb":{"learning_rate":0.01,"n_estimators":150}}

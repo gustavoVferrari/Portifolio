@@ -1,6 +1,6 @@
 
 import sys
-sys.path.append(r'C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio/Classification/titanic')
+sys.path.append(r'C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio/Classification/titanic_version_1')
 
 import os
 import pandas as pd
@@ -28,7 +28,7 @@ warnings.filterwarnings('ignore')
 pd.set_option('display.float_format', '{:.4f}'.format)
 
 # carregar configurações
-yaml_path = r"C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio\Classification\titanic\src\config.yaml"
+yaml_path = r"C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio\Classification\titanic_version_1\src\config.yaml"
 with open(yaml_path, "r", encoding="utf-8") as f:
     config = yaml.safe_load(f)
 
@@ -56,15 +56,13 @@ def model_selection(**params):
         {'adaboostclassifier__n_estimators':[150, 200, 250, 300],
          'adaboostclassifier__learning_rate': [0.01, 0.1, 0.001]}
         ]
-    ,
-    
+    ,    
     gb = [
         GradientBoostingClassifier(random_state=seed_),
         {'gradientboostingclassifier__n_estimators':[100, 150, 200, 250],
          'gradientboostingclassifier__learning_rate': [0.01, 0.1, 0.001]}
         ]
-    , 
-    
+    ,     
     ml = [
         MLPClassifier(random_state=seed_),
         {'mlpclassifier__hidden_layer_sizes':[10, 20, 30],
@@ -92,8 +90,9 @@ def model_selection(**params):
         len_ = len([k.split('__')[0] for k in params.keys()][0])
         name_ = [k.split('__')[0] for k in params.keys()][0]
 
+        pca_thres = params_['pca_threshold']
         grid_pipeline = make_pipeline(
-            PCA(n_components=0.9, svd_solver='full'), 
+            PCA(n_components=pca_thres, svd_solver='full'), 
             classifier)
         
         grid = GridSearchCV(
@@ -243,7 +242,8 @@ if __name__ == "__main__":
         'save_plot': config['save_reports']['path_plot'],
         'score': config['model_selection']['score'],
         'random_state': 42,
-        'cv': 5
+        'cv': 5,
+        'pca_threshold':config['feat_selection_params']['pca_threshold']
         }
     
     model_selection(**params_)

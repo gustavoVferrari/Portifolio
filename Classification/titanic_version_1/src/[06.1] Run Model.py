@@ -1,10 +1,10 @@
 import sys
-sys.path.append(r'C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio/Classification/titanic/src')
+sys.path.append(r'C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio/Classification/titanic_version_1/src')
 import tqdm
 import subprocess
 import os
 
-path = r'C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio/Classification/titanic/src/' 
+path = r'C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio/Classification/titanic_version_1/src/' 
 
 
 SCRIPTS_TO_RUN = [
