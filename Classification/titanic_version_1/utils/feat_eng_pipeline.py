@@ -37,7 +37,7 @@ def feat_eng_pipeline(
     rare_label = make_pipeline(
         RareLabelEncoder(
         variables=categorical_var,
-        tol=.05,
+        tol=.1,
         n_categories=2
     ))
     
@@ -55,7 +55,7 @@ def feat_eng_pipeline(
     
     pipe = make_pipeline(
         preprocessor.set_output(transform="pandas"),
-        MinMaxScaler().set_output(transform="pandas"),
+        # MinMaxScaler().set_output(transform="pandas"),
         )
     
     return pipe

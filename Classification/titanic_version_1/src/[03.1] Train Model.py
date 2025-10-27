@@ -58,7 +58,7 @@ def train_model(**params):
     clf_model.set_params(**dict_params, random_state=seed_)
     
     pipeline = make_pipeline(
-            PCA(n_components=0.9, svd_solver='full'), 
+            # PCA(n_components=0.9, svd_solver='full'), 
             clf_model)
     
     print("train model")

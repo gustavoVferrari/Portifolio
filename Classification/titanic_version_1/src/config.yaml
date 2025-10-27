@@ -30,28 +30,35 @@ feat_selection_params:
   val_size: 0.25
   cols_2_drop:
     - PassengerId
+    - Parch
+    - SibSp
+    - Ticket
+    - Cabin
+    - Embarked
   cat_var:
     - Pclass
     - Name
     - Sex
-    - Ticket
-    - Cabin
-    - Embarked
+    # - Ticket
+    # - Cabin
+    # - Embarked
     - Ticket_1p
     - Cabin_1p
     - Embarked_mod
-    - SibSp_mod
+    # - SibSp_mod
   num_var:
     - Age
-    - SibSp
-    - Parch
+    # - SibSp
+    # - Parch
     - Fare
+    - FamilySize
+    - IsAlone
   target: 
     - Survived
 
 ## Model selection
 model_selection:
-  score: 'roc_auc'
+  score: 'accuracy'
 model:
   path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic_version_1/models'
 

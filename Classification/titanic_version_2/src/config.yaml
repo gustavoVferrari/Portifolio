@@ -1,0 +1,72 @@
+## Data gathering
+data_gathering:
+  path: "C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic_version_2/dados_titanic/raw"
+  file_train: "train.csv"
+  file_test: "test.csv"
+  competition: "titanic"
+
+
+output_data:
+  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic_version_2/dados_titanic/processed'
+  file_train: "train.parquet"
+  file_test: "test.parquet"
+
+## feat engineering
+pipe_feat_eng:
+  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic_version_2/models'
+
+## Feature selection
+feat_selection:
+  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic_version_2/dados_titanic/processed'
+  input_file: "train.parquet"
+  X_train_file: "feat_X_train.parquet"
+  X_val_file: "feat_X_val.parquet"
+  y_train_file: "feat_y_train.parquet"
+  y_val_file: "feat_y_val.parquet"
+
+feat_selection_params:
+  random_state: 23
+  pca_threshold: 0.95
+  val_size: 0.25
+  cols_2_drop:
+    - PassengerId
+  cat_var:
+    - Pclass
+    - Name
+    - Sex
+    - Ticket
+    - Cabin
+    - Embarked
+
+  num_var:
+    - Age
+    - SibSp
+    - Parch
+    - Fare
+  target: 
+    - Survived
+
+## Model selection
+model_selection:
+  score: 'roc_auc'
+model:
+  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic_version_2/models'
+
+## Model
+train_model: 
+  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic_version_2/dados_titanic/processed'
+  model_params: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic_version_2/dados_titanic/reports'
+
+
+## Save reports
+save_reports:
+  path_reports: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic_version_2/dados_titanic/reports'
+  path_plot: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic_version_2/plots'
+
+## Prediction
+output_predict:
+  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic_version_2/dados_titanic/processed'
+
+## Submission
+submission:
+  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic_version_2/dados_titanic/submission'

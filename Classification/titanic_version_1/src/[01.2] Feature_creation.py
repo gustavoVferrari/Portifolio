@@ -1,15 +1,13 @@
 import sys
-sys.path.append(r'C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio/Classification/titanic')
+sys.path.append(r'C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio/Classification/titanic_version_1')
 
-import pandas as pd
-import regex
-import os
-import yaml
 import numpy as np
-
+import os
+import pandas as pd
+import yaml
 
 # Carregando o arquivo de configuração
-yaml_path = r"C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio\Classification\titanic\src\config.yaml"
+yaml_path = r"Classification\titanic_version_1\src\config.yaml"
 with open(yaml_path, "r", encoding="utf-8") as f:
     config = yaml.safe_load(f)
     
@@ -24,7 +22,10 @@ def feature_creation(input_data, output_data):
     df['Ticket_1p'] = df['Ticket'].apply(lambda row: row[:1] if pd.notnull(row) else row)
     df['Cabin_1p'] = df['Cabin'].apply(lambda row: row[:1] if pd.notnull(row) else row)
     df['Embarked_mod'] = df['Embarked'].map({'S':'SQ', 'Q':'SQ', 'C':'C'})
-    df['SibSp_mod'] = df['SibSp'].apply(lambda row: 'yes' if row > 0 else 'no')
+    
+    df['FamilySize'] = df['SibSp'] + df['Parch'] + 1
+    df['IsAlone'] = (df['FamilySize'] == 1).astype(int)
+    # df['SibSp_mod'] = df['SibSp'].apply(lambda row: 'yes' if row > 0 else 'no')
     print('Features criadas')
 
     print('Alterando tipo de dado')

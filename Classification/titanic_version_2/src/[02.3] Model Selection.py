@@ -1,6 +1,6 @@
 
 import sys
-sys.path.append(r'C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio/Classification/titanic_version_1')
+sys.path.append(r'C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio/Classification/titanic_version_2')
 
 import os
 import pandas as pd
@@ -8,6 +8,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.pipeline import make_pipeline
 from sklearn.model_selection import StratifiedKFold
+from sklearn.linear_model import LogisticRegression
+from sklearn.svm import SVC
 from sklearn.ensemble import (
     RandomForestClassifier, 
     AdaBoostClassifier, 
@@ -19,6 +21,7 @@ from sklearn.metrics import (
     roc_auc_score)
 from sklearn.model_selection import GridSearchCV
 import yaml
+import json
 from sklearn.decomposition import PCA
 
 plt.style.use('ggplot')
@@ -28,7 +31,7 @@ warnings.filterwarnings('ignore')
 pd.set_option('display.float_format', '{:.4f}'.format)
 
 # carregar configurações
-yaml_path = r"C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio\Classification\titanic_version_1\src\config.yaml"
+yaml_path = r"C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio\Classification\titanic_version_2\src\config.yaml"
 with open(yaml_path, "r", encoding="utf-8") as f:
     config = yaml.safe_load(f)
 
@@ -62,7 +65,20 @@ def model_selection(**params):
         {'gradientboostingclassifier__n_estimators':[100, 150, 200, 250],
          'gradientboostingclassifier__learning_rate': [0.01, 0.1, 0.001]}
         ]
-    ,     
+    
+    ,
+    lr = [
+        LogisticRegression(),
+        {'logisticregression__solver':['saga', 'lbfgs', 'liblinear'],
+         'logisticregression__C': [0.1, 1]}
+        ],
+    
+    sv = [
+        SVC(probability=True),
+        {'svc__kernel':['rbf', 'poly'],
+         'svc__C': [0.1, 1]}
+        ],
+         
     ml = [
         MLPClassifier(random_state=seed_),
         {'mlpclassifier__hidden_layer_sizes':[10, 20, 30],
@@ -92,8 +108,9 @@ def model_selection(**params):
 
         pca_thres = params_['pca_threshold']
         grid_pipeline = make_pipeline(
-            PCA(n_components=pca_thres, svd_solver='full'), 
-            classifier)
+            # PCA(n_components=pca_thres, svd_solver='full'), 
+            classifier
+            )
         
         grid = GridSearchCV(
             grid_pipeline,
@@ -153,8 +170,22 @@ def model_selection(**params):
          dict_best_model_params[best_idx], 
          orient='index',
          columns=[best_idx])
-     .to_json(os.path.join(params_['reports'], 
-                           'model_best_params.json')))    
+     .to_json(os.path.join(
+         params_['reports'], 
+         'model_best_params.json'))
+     )    
+    
+    file_dict = os.path.join(
+        params_['reports'], 
+        'best_model_params.json'
+        )
+    
+    with open(file_dict, 'w', encoding='utf-8') as arquivo:
+        json.dump(
+            dict_best_model_params, 
+            arquivo,
+            ensure_ascii=False, 
+            indent=4)
     
     for i, (train_index, val_index) in enumerate(skf.split(X_train, y_train)):
 

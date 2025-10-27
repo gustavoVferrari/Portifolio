@@ -14,10 +14,10 @@ with open(yaml_path, "r", encoding="utf-8") as f:
     
     
 def submission(**params):
-    
+     
     print('Data submission')
     df_test = pd.read_parquet(params['test_data'])    
-    y_test_id = df_test[params['passanger_id']].copy()
+    y_test_id = df_test[['PassengerId']].copy()
     df_test.drop(
         columns=params['cols_2_drop'], 
         inplace=True)
@@ -46,7 +46,9 @@ def submission(**params):
         report = json.load(file)
         
     # predict    
-    y_test_id.loc[:,f'{params['target'][0]}'] = model.predict(df_test_transf[report['Variaveis mantidas:']])
+    y_test_id.loc[:,f'{params['target'][0]}'] = model.predict(
+        df_test_transf[report['Variaveis mantidas:']]
+        )
     
     y_test_id.to_csv(
         os.path.join(params['submission'],
@@ -58,7 +60,6 @@ if __name__ == "__main__":
       params = {
           'test_data': os.path.join(config['output_data']['path'], 
                                     config['output_data']['file_test']),
-          'passanger_id' : config['feat_selection_params']['cols_2_drop'],
           'cols_2_drop' : config['feat_selection_params']['cols_2_drop'],           
           'pipe': config['pipe_feat_eng']['path'],
           'model': config['model']['path'],
