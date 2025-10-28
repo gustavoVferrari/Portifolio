@@ -1,0 +1,72 @@
+## Data gathering
+data_gathering:
+  path: "C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/dsa_single_model/dsa/raw"
+  train: "dataset_treino.csv"
+  test: "dataset_teste.csv"
+  competition: "competicao-dsa-machine-learning-jan-2019"
+
+processed_data:
+  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/dsa_single_model/dsa/processed'
+  train: "train.parquet"
+  test: "test.parquet"
+
+## feat engineering
+pipe_feat_eng:
+  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/dsa_single_model/models'
+
+## Feature selection
+feat_selection:
+  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/dsa_single_model/dsa/processed'
+  input: "train.parquet"
+  X_train: "feat_X_train.parquet"
+  X_val: "feat_X_val.parquet"
+  y_train: "feat_y_train.parquet"
+  y_val: "feat_y_val.parquet"
+
+feat_selection_params:
+  pipe_version: 1
+  random_state: 23
+  pca_threshold: 0.95
+  val_size: 0.25
+  cols_2_drop:
+    - id  
+  cat_var:    
+  num_var:
+    - num_gestacoes
+    - glicose
+    - pressao_sanguinea
+    - grossura_pele
+    - bmi
+    - indice_historico
+    - idade
+  target: 
+    - classe
+
+## Model selection
+model_selection:  
+  cols_2_drop:
+    - numerical_pipe__pressao_sanguinea
+    - numerical_pipe__grossura_pele
+  score: 'accuracy'
+model:
+  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/dsa_single_model/models'
+  model_version: 1
+
+## Model
+train_model: 
+  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/dsa_single_model/dsa/processed'
+  model_params: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/dsa_single_model/dsa/reports'
+
+
+## Save reports
+save_reports:
+  path_reports: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/dsa_single_model/dsa/reports'
+  path_plot: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/dsa_single_model/plots'
+
+## Prediction
+output_predict:
+  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/dsa_single_model/dsa/processed'
+
+## Submission
+submission:
+  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/dsa_single_model/dsa/submission'
