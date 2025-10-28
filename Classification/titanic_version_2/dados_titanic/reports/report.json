@@ -1,1 +1,0 @@
-{"removed_variables": [], "new_X_train_shape": [668, 9], "Variaveis mantidas:": ["numerical_pipe__Age", "numerical_pipe__SibSp", "numerical_pipe__Parch", "numerical_pipe__Fare", "numerical_pipe__FamilySize", "numerical_pipe__IsAlone", "categorical_pipe__Pclass_3", "categorical_pipe__Pclass_2", "categorical_pipe__Sex_male"]}

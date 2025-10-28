@@ -1,0 +1,82 @@
+## Data gathering
+data_gathering:
+  path: "C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic_voting_model/dados_titanic/raw"
+  train: "train.csv"
+  test: "test.csv"
+  competition: "titanic"
+
+processed_data:
+  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic_voting_model/dados_titanic/processed'
+  train: "train.parquet"
+  test: "test.parquet"
+
+## feat engineering
+pipe_feat_eng:
+  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic_voting_model/models'
+
+## Feature selection
+feat_selection:
+  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic_voting_model/dados_titanic/processed'
+  input: "train.parquet"
+  X_train: "feat_X_train.parquet"
+  X_val: "feat_X_val.parquet"
+  y_train: "feat_y_train.parquet"
+  y_val: "feat_y_val.parquet"
+
+feat_selection_params:
+  pipe_version: 1
+  random_state: 23
+  pca_threshold: 0.95
+  val_size: 0.25
+  cols_2_drop:
+    - PassengerId
+    - Name    
+  cat_var:
+    - Pclass    
+    - Sex
+    - Ticket
+    - Cabin
+    - Embarked
+    - Ticket_1p
+    - Cabin_1p
+    - Embarked_mod
+  num_var:
+    - Age
+    - SibSp
+    - Parch
+    - Fare
+    - FamilySize
+    - IsAlone
+  target: 
+    - Survived
+
+## Model selection
+model_selection:  
+  cols_2_drop:
+    - categorical_pipe__Ticket_1p_S
+    - categorical_pipe__Embarked_Q
+    - categorical_pipe__Embarked_mod_SQ
+    - categorical_pipe__Embarked_C
+  score: 'accuracy'
+model:
+  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic_voting_model/models'
+  model_version: 1
+
+## Model
+train_model: 
+  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic_voting_model/dados_titanic/processed'
+  model_params: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic_voting_model/dados_titanic/reports'
+
+
+## Save reports
+save_reports:
+  path_reports: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic_voting_model/dados_titanic/reports'
+  path_plot: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic_voting_model/plots'
+
+## Prediction
+output_predict:
+  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic_voting_model/dados_titanic/processed'
+
+## Submission
+submission:
+  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic_voting_model/dados_titanic/submission'
