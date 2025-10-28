@@ -3,7 +3,7 @@
         "criterion": "entropy",
         "max_depth": 5,
         "min_samples_split": 4,
-        "n_estimators": 150
+        "n_estimators": 250
     },
     "ab": {
         "learning_rate": 0.1,
@@ -11,23 +11,23 @@
     },
     "gb": {
         "learning_rate": 0.1,
-        "n_estimators": 100
+        "n_estimators": 200
     },
     "lr": {
         "C": 1,
         "solver": "liblinear"
     },
     "sv": {
-        "C": 0.1,
+        "C": 1,
         "kernel": "poly"
     },
     "ml": {
         "activation": "relu",
         "hidden_layer_sizes": 30,
-        "learning_rate_init": 0.001
+        "learning_rate_init": 0.01
     },
     "hg": {
         "learning_rate": 0.1,
-        "max_iter": 100
+        "max_iter": 50
     }
 }

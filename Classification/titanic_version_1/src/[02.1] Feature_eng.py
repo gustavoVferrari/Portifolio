@@ -1,6 +1,6 @@
 import sys
 sys.path.append(r'C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio/Classification/titanic_version_1')
-
+import json
 import pandas as pd
 import yaml
 import pickle
@@ -42,7 +42,7 @@ def run_feature_eng(**params):
     print('Save data transform')
     pipe_to_save = os.path.join(
         params['pipe'],
-        'pipe.pkl'
+        f'feat_sel_pipe_{params['version']}.pkl'
         )
 
     with open(pipe_to_save, 'wb') as arquivo:
@@ -50,6 +50,13 @@ def run_feature_eng(**params):
     
     X_train_trans.to_parquet(params['output_x_train'])
     X_val_trans.to_parquet(params['output_x_val'])
+    
+    X_train_trans.columns    
+    dict_cols = dict(columns = list(X_train_trans.columns))
+    
+    with open(os.path.join(params['reports'], 'feat_sel_columns.json'), 'w') as arquivo:
+        json.dump(dict_cols, arquivo)
+        
     pd.DataFrame(y_train).to_parquet(params['output_y_train'])
     pd.DataFrame(y_val).to_parquet(params['output_y_val'])
     
@@ -57,40 +64,32 @@ def run_feature_eng(**params):
     
     
 if __name__ == "__main__":
-    
-    input_data=os.path.join(
-            config['feat_selection']['path'],
-            config['feat_selection']['input_file'])
-    
-    output_X_train = os.path.join(
-            config['feat_selection']['path'],
-            config['feat_selection']['X_train_file'])
-    
-    output_X_val = os.path.join(
-            config['feat_selection']['path'],
-            config['feat_selection']['X_val_file'])
-    
-    output_y_train = os.path.join(
-            config['feat_selection']['path'],
-            config['feat_selection']['y_train_file'])
-    
-    output_y_val = os.path.join(
-            config['feat_selection']['path'],
-            config['feat_selection']['y_val_file'])
-    
+        
     params = {
-        'input_data' : input_data,
+        'input_data':os.path.join(
+            config['feat_selection']['path'],
+            config['feat_selection']['input']),                
+        'output_x_train' : os.path.join(
+            config['feat_selection']['path'],
+            config['feat_selection']['X_train']),        
+        'output_x_val' : os.path.join(
+            config['feat_selection']['path'],
+            config['feat_selection']['X_val']),        
+        'output_y_train' : os.path.join(
+            config['feat_selection']['path'],
+            config['feat_selection']['y_train']),        
+        'output_y_val' : os.path.join(
+            config['feat_selection']['path'],
+            config['feat_selection']['y_val']),       
         'random_state' : config['feat_selection_params']['random_state'],
         'val_size' : config['feat_selection_params']['val_size'],
         'cols_2_drop' : config['feat_selection_params']['cols_2_drop'],
         'num_var' : config['feat_selection_params']['num_var'],
         'cat_var' : config['feat_selection_params']['cat_var'],
         'target' : config['feat_selection_params']['target'],
-        'pipe': config['pipe_feat_eng']['path'],
-        'output_x_train' : output_X_train,
-        'output_x_val' : output_X_val,
-        'output_y_train' : output_y_train,
-        'output_y_val' : output_y_val,
+        'pipe': config['pipe_feat_eng']['path'], 
+        'reports': config['save_reports']['path_reports'],
+        'pipe_version': config['feat_selection_params']['pipe_version']        
         }
     
     run_feature_eng(**params)

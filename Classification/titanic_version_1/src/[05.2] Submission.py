@@ -19,36 +19,39 @@ def submission(**params):
     df_test = pd.read_parquet(params['test_data'])    
     y_test_id = df_test[['PassengerId']].copy()
     df_test.drop(
-        columns=params['cols_2_drop'], 
+        columns=params['cols_2_drop_feat_sel'], 
         inplace=True)
     # read pipe
     pipe_path = os.path.join(
         params['model'],
-        f"pipe.pkl")
+        f"feat_sel_pipe_{config['feat_selection_params']['pipe_version']}.pkl")
     
     with open(pipe_path, "rb") as file:
         pipe = pickle.load(file)
     # appply pipe
-    df_test_transf = pipe.transform(df_test)    
+    df_test_transf = pipe.transform(df_test) 
+    
+    df_test_transf.drop(
+        columns = params['cols_2_drop_model'],
+        inplace=True
+    )   
     
     model_path = os.path.join(
         params['model'],
-        f"model.pkl")
+        f"model_{params['model_version']}.pkl")
     # open model
     with open(model_path, "rb") as file:
         model = pickle.load(file)
         
-    report_path = os.path.join(
-        params['report'],
-        "report.json")
-    # get cols to predict
-    with open(report_path, "rb") as file:
-        report = json.load(file)
+    # report_path = os.path.join(
+    #     params['report'],
+    #     "report.json")
+    # # get cols to predict
+    # with open(report_path, "rb") as file:
+    #     report = json.load(file)
         
     # predict    
-    y_test_id.loc[:,f'{params['target'][0]}'] = model.predict(
-        df_test_transf[report['Variaveis mantidas:']]
-        )
+    y_test_id.loc[:,f'{params['target'][0]}'] = model.predict(df_test_transf)
     
     y_test_id.to_csv(
         os.path.join(params['submission'],
@@ -58,13 +61,15 @@ def submission(**params):
 if __name__ == "__main__":
     
       params = {
-          'test_data': os.path.join(config['output_data']['path'], 
-                                    config['output_data']['file_test']),
-          'cols_2_drop' : config['feat_selection_params']['cols_2_drop'],           
+          'test_data': os.path.join(config['processed_data']['path'], 
+                                    config['processed_data']['test']),
+          'cols_2_drop_feat_sel' : config['feat_selection_params']['cols_2_drop'],           
           'pipe': config['pipe_feat_eng']['path'],
           'model': config['model']['path'],
+          'model_version': config['model']['model_version'],
           'report': config['save_reports']['path_reports'],
           'target':config['feat_selection_params']['target'],
+          'cols_2_drop_model':config['model_selection']['cols_2_drop'],
           'submission':config['submission']['path']
           }
       

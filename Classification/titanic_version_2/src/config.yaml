@@ -30,19 +30,21 @@ feat_selection_params:
   val_size: 0.25
   cols_2_drop:
     - PassengerId
-  cat_var:
-    - Pclass
-    - Name
-    - Sex
-    - Ticket
     - Cabin
+    - Ticket
     - Embarked
+    - Name
+  cat_var:
+    - Pclass    
+    - Sex    
 
   num_var:
     - Age
     - SibSp
     - Parch
     - Fare
+    - FamilySize
+    - IsAlone
   target: 
     - Survived
 

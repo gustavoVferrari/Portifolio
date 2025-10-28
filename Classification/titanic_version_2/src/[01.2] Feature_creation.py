@@ -19,12 +19,10 @@ def feature_creation(input_data, output_data):
     df = pd.read_csv(input_data)    
   
     print('Criando Features')
-    # df['Ticket'] = df['Ticket'].str.replace(r'[^A-Za-z0-9]', '', regex=True)
-    # df['Cabin'] = df['Cabin'].str.replace(r'[^A-Za-z0-9]', '', regex=True)
-    # df['Ticket_1p'] = df['Ticket'].apply(lambda row: row[:1] if pd.notnull(row) else row)
-    # df['Cabin_1p'] = df['Cabin'].apply(lambda row: row[:1] if pd.notnull(row) else row)
-    # df['Embarked_mod'] = df['Embarked'].map({'S':'SQ', 'Q':'SQ', 'C':'C'})
-    # df['SibSp_mod'] = df['SibSp'].apply(lambda row: 'yes' if row > 0 else 'no')
+    df['Ticket'] = df['Ticket'].str.replace(r'[^A-Za-z0-9]', '', regex=True)
+    df['Cabin'] = df['Cabin'].str.replace(r'[^A-Za-z0-9]', '', regex=True)
+    df['FamilySize'] = df['SibSp'] + df['Parch'] + 1
+    df['IsAlone'] = (df['FamilySize'] == 1).astype(int)
     print('Features criadas')
 
     print('Alterando tipo de dado')

@@ -1,15 +1,14 @@
 ## Data gathering
 data_gathering:
   path: "C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic_version_1/dados_titanic/raw"
-  file_train: "train.csv"
-  file_test: "test.csv"
+  train: "train.csv"
+  test: "test.csv"
   competition: "titanic"
 
-
-output_data:
+processed_data:
   path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic_version_1/dados_titanic/processed'
-  file_train: "train.parquet"
-  file_test: "test.parquet"
+  train: "train.parquet"
+  test: "test.parquet"
 
 ## feat engineering
 pipe_feat_eng:
@@ -18,38 +17,33 @@ pipe_feat_eng:
 ## Feature selection
 feat_selection:
   path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic_version_1/dados_titanic/processed'
-  input_file: "train.parquet"
-  X_train_file: "feat_X_train.parquet"
-  X_val_file: "feat_X_val.parquet"
-  y_train_file: "feat_y_train.parquet"
-  y_val_file: "feat_y_val.parquet"
+  input: "train.parquet"
+  X_train: "feat_X_train.parquet"
+  X_val: "feat_X_val.parquet"
+  y_train: "feat_y_train.parquet"
+  y_val: "feat_y_val.parquet"
 
 feat_selection_params:
+  pipe_version: 1
   random_state: 23
   pca_threshold: 0.95
   val_size: 0.25
   cols_2_drop:
     - PassengerId
-    - Parch
-    - SibSp
+    - Name    
+  cat_var:
+    - Pclass    
+    - Sex
     - Ticket
     - Cabin
     - Embarked
-  cat_var:
-    - Pclass
-    - Name
-    - Sex
-    # - Ticket
-    # - Cabin
-    # - Embarked
     - Ticket_1p
     - Cabin_1p
     - Embarked_mod
-    # - SibSp_mod
   num_var:
     - Age
-    # - SibSp
-    # - Parch
+    - SibSp
+    - Parch
     - Fare
     - FamilySize
     - IsAlone
@@ -57,10 +51,19 @@ feat_selection_params:
     - Survived
 
 ## Model selection
-model_selection:
+model_selection:  
+  cols_2_drop:
+    - categorical_pipe__Ticket_1p_Rare
+    - numerical_pipe__SibSp
+    - numerical_pipe__Parch 
+    - numerical_pipe__FamilySize
+    - categorical_pipe__Embarked_mod_C
+    - categorical_pipe__Embarked_mod_SQ
+    - categorical_pipe__Embarked_C
   score: 'accuracy'
 model:
   path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic_version_1/models'
+  model_version: 1
 
 ## Model
 train_model: 

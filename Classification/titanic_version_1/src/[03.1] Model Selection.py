@@ -16,28 +16,35 @@ from sklearn.ensemble import (
     HistGradientBoostingClassifier)
 from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import (
-    f1_score,     
+    f1_score,
+    accuracy_score,     
     roc_auc_score)
 from sklearn.model_selection import GridSearchCV
 import yaml
 from sklearn.decomposition import PCA
-
 plt.style.use('ggplot')
-
 import warnings
 warnings.filterwarnings('ignore')
 pd.set_option('display.float_format', '{:.4f}'.format)
 
-# carregar configurações
-yaml_path = r"C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio\Classification\titanic_version_1\src\config.yaml"
+
+yaml_path = r"Classification\titanic_version_1\src\config.yaml"
 with open(yaml_path, "r", encoding="utf-8") as f:
     config = yaml.safe_load(f)
 
 def model_selection(**params): 
+    
     X_train = pd.read_parquet(params_['X_train_feat_sel'])
     X_val = pd.read_parquet(params_['X_val_feat_sel'])
     y_train = pd.read_parquet(params_['y_train_feat_sel'])
     y_val = pd.read_parquet(params_['y_val_feat_sel']) 
+    
+    X_train.drop(
+        columns=config['model_selection']['cols_2_drop'],
+        inplace=True)
+    X_val.drop(
+        columns=config['model_selection']['cols_2_drop'],
+        inplace=True)
     
     y_train = y_train.astype('int')
     y_val = y_val.astype('int')
@@ -86,7 +93,7 @@ def model_selection(**params):
         classifier = models[model][0]
         params = models[model][1]
         
-        print("testando o modelo:", classifier)
+        print("Running: ", classifier)
         
         len_ = len([k.split('__')[0] for k in params.keys()][0])
         name_ = [k.split('__')[0] for k in params.keys()][0]
@@ -109,7 +116,8 @@ def model_selection(**params):
         pred_test = grid.predict(X_val)
         
         dict_metrics[model] = [
-            f1_score(y_val, pred_test), 
+            f1_score(y_val, pred_test),
+            accuracy_score(y_val, pred_test), 
             roc_auc_score(y_val, pred_proba_test)
             ] 
         
@@ -122,15 +130,15 @@ def model_selection(**params):
     
     metrics =  pd.DataFrame(
         dict_metrics, 
-        index=['f1', 'roc'])
+        index=['f1', 'accuracy','roc'])
     
     metrics.to_json(
         os.path.join(params_['reports'], 
                      'model_comparison.json')
         )
     
-    best_idx = pd.DataFrame(dict_metrics, index=['f1', 'roc']).loc['roc'].argmax()
-    best_idx = pd.DataFrame(dict_metrics, index=['f1', 'roc']).columns[best_idx]
+    best_idx = pd.DataFrame(dict_metrics, index=['f1', 'accuracy', 'roc']).loc['roc'].argmax()
+    best_idx = pd.DataFrame(dict_metrics, index=['f1', 'accuracy', 'roc']).columns[best_idx]
     print("Best model:", best_idx)
     
     # Cross-Validation with best model
@@ -162,8 +170,7 @@ def model_selection(**params):
             dict_best_params, 
             arquivo,
             ensure_ascii=False, 
-            indent=4)       
-   
+            indent=4)          
     
     for i, (train_index, val_index) in enumerate(skf.split(X_train, y_train)):
 
@@ -208,7 +215,6 @@ def model_selection(**params):
         x='fold')
     
     plt.title('score per fold')
-    print("Salvando em:", save_path)
     plt.savefig(save_path, dpi=300, bbox_inches="tight")
     plt.close() 
     
@@ -222,31 +228,24 @@ def model_selection(**params):
         plt.savefig(save_path, dpi=300, bbox_inches="tight")
         plt.close() 
 
-    print('Processo concluido com sucesso')
+    print('Run with success')
     
-if __name__ == "__main__":
-    X_train_feat_sel = os.path.join(
-            config['feat_selection']['path'],
-            config['feat_selection']['X_train_file'])
-    
-    X_val_feat_sel = os.path.join(
-            config['feat_selection']['path'],
-            config['feat_selection']['X_val_file'])
-    
-    y_train_feat_sel = os.path.join(
-            config['feat_selection']['path'],
-            config['feat_selection']['y_train_file'])
-    
-    y_val_feat_sel = os.path.join(
-            config['feat_selection']['path'],
-            config['feat_selection']['y_val_file'])
-    
+if __name__ == "__main__":    
      
     params_ = {        
-        'X_train_feat_sel': X_train_feat_sel,
-        'X_val_feat_sel': X_val_feat_sel,
-        'y_train_feat_sel': y_train_feat_sel,
-        'y_val_feat_sel': y_val_feat_sel,
+        'X_train_feat_sel': os.path.join(
+            config['feat_selection']['path'],
+            config['feat_selection']['X_train']),
+        'X_val_feat_sel': os.path.join(
+            config['feat_selection']['path'],
+            config['feat_selection']['X_val']),
+        'y_train_feat_sel': os.path.join(
+            config['feat_selection']['path'],
+            config['feat_selection']['y_train']),
+        'y_val_feat_sel': os.path.join(
+            config['feat_selection']['path'],
+            config['feat_selection']['y_val']),
+        'cols_2_drop':config['model_selection']['cols_2_drop'],
         'reports': config['save_reports']['path_reports'],
         'save_plot': config['save_reports']['path_plot'],
         'score': config['model_selection']['score'],

@@ -24,21 +24,26 @@ warnings.filterwarnings('ignore')
 pd.set_option('display.float_format', '{:.4f}'.format)
 
 
-yaml_path = r"C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio\Classification\titanic_version_1\src\config.yaml"
+yaml_path = r"Classification\titanic_version_1\src\config.yaml"
 with open(yaml_path, "r", encoding="utf-8") as f:
     config = yaml.safe_load(f)
 
 
 def train_model(**params):
     X_train = pd.read_parquet(params_['X_train_feat_sel'])
-    y_train = pd.read_parquet(params_['y_train_feat_sel'])    
+    y_train = pd.read_parquet(params_['y_train_feat_sel']) 
+    
+    X_train.drop(
+        columns=config['model_selection']['cols_2_drop'],
+        inplace=True)
+       
     y_train = y_train.astype('int')
     
     seed_ = params_['random_state']
     
     path = os.path.join(
         params_['model_params'],
-        "model_best_params.json")
+        "best_model_params.json")
     
     with open(path, "r", encoding="utf-8") as json_file:
         best_model_params = json.load(json_file)
@@ -73,12 +78,11 @@ def train_model(**params):
     pd.DataFrame(y_proba_train).to_parquet(
         params_['y_proba_train_path'],
         )    
-  
     
     print("saving model pkl")
     model_path = os.path.join(
         config['model']['path'],
-        'model.pkl')
+        f'model_{params_['model_version']}.pkl')
     
     with open(model_path, 'wb') as arquivo:
         pickle.dump(pipeline, arquivo)
@@ -107,31 +111,26 @@ def train_model(**params):
     
     
 if __name__ == "__main__":
-    X_train_feat_sel = os.path.join(
-            config['feat_selection']['path'],
-            config['feat_selection']['X_train_file'])
-        
-    y_train_feat_sel = os.path.join(
-            config['feat_selection']['path'],
-            config['feat_selection']['y_train_file'])
-    
-    y_pred_train_path = os.path.join(
-            config['train_model']['path'],
-            'y_pred_train.parquet')
-    
-    y_proba_train_path = os.path.join(
-            config['train_model']['path'],
-            'y_proba_train.parquet')
     
     params_ = {        
-        'X_train_feat_sel': X_train_feat_sel,
-        'y_train_feat_sel': y_train_feat_sel,
-        'y_pred_train_path': y_pred_train_path,
-        'y_proba_train_path': y_proba_train_path,
+        'X_train_feat_sel': os.path.join(
+            config['feat_selection']['path'],
+            config['feat_selection']['X_train']),
+        'y_train_feat_sel': os.path.join(
+            config['feat_selection']['path'],
+            config['feat_selection']['y_train']),
+        'y_pred_train_path': os.path.join(
+            config['train_model']['path'],
+            'y_pred_train.parquet'),
+        'y_proba_train_path': os.path.join(
+            config['train_model']['path'],
+            'y_proba_train.parquet'),
         'report': config['save_reports']['path_reports'],
         'model': config['model']['path'],
         'model_params': config['train_model']['model_params'],
-        'random_state': 42,
+        'random_state': 23,
+        'pipe_version': config['feat_selection_params']['pipe_version'],
+        'model_version': config['model']['model_version']
         }
     
     train_model(**params_)
