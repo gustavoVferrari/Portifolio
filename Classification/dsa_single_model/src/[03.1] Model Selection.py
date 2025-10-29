@@ -8,6 +8,7 @@ import json
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.pipeline import make_pipeline
+from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import StratifiedKFold
 from sklearn.ensemble import (
     RandomForestClassifier, 
@@ -55,8 +56,10 @@ def model_selection(**params):
         RandomForestClassifier(random_state=seed_),
         {'randomforestclassifier__n_estimators':[100, 150, 200, 250],
          'randomforestclassifier__criterion': ['gini', 'entropy'], 
-         'randomforestclassifier__max_depth': [None, 5, 10, 20],
-         'randomforestclassifier__min_samples_split' :[2,4,6]}
+         'randomforestclassifier__max_depth': [None, 2, 3, 5, 10],
+         'randomforestclassifier__min_samples_split' :[None, 2,4,6],
+         'randomforestclassifier__class_weight':[None, {0:1,1:2}, {0:1,1:4}]
+         }
         ]
     ,
     ab = [
@@ -70,7 +73,14 @@ def model_selection(**params):
         {'gradientboostingclassifier__n_estimators':[100, 150, 200, 250],
          'gradientboostingclassifier__learning_rate': [0.01, 0.1, 0.001]}
         ]
-    ,     
+    ,
+    lr = [
+        LogisticRegression(random_state=seed_),
+        {'logisticregression__solver':['lbfgs', 'newton-cg', 'liblinear'],
+         'logisticregression__max_iter': [50,100],
+         'logisticregression__class_weight':[None, {0:1,1:2}, {0:1,1:4}],
+        }
+        ],     
     ml = [
         MLPClassifier(random_state=seed_),
         {'mlpclassifier__hidden_layer_sizes':[10, 20, 30],
@@ -80,7 +90,9 @@ def model_selection(**params):
         ],
     hg = [HistGradientBoostingClassifier(),
           {'histgradientboostingclassifier__learning_rate': [0.01, 0.1, 0.001],
-           'histgradientboostingclassifier__max_iter': [50, 100, 150]}
+           'histgradientboostingclassifier__max_iter': [50, 100, 150],
+           'histgradientboostingclassifier__class_weight': [None, {0:1,1:2}, {0:1,1:4}]
+           }
     ]
           )
     

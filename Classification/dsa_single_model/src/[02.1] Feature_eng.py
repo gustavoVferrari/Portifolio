@@ -21,7 +21,8 @@ def run_feature_eng(**params):
     df = pd.read_parquet(params['input_data'])
     df.drop(
         columns=params['cols_2_drop'], 
-        inplace=True)
+        inplace=True)  
+    
     
     print('Split data into train and validation')
     X_train, X_val, y_train, y_val =  train_test_split(
@@ -31,7 +32,8 @@ def run_feature_eng(**params):
         random_state=params['random_state'])
     
     pipe = feat_eng_pipeline(
-        numerical_var=params['num_var'], 
+        num_var_1=params['num_var_1'],
+        num_var_2=params['num_var_2']
         )
     
     print('Feature Eng pipe transform')
@@ -39,6 +41,11 @@ def run_feature_eng(**params):
     X_train_trans = pipe.transform(X_train)
     X_val_trans = pipe.transform(X_val)
 
+
+    X_train_trans.columns = X_train_trans.columns.str.replace('inputer_pipe','numerical_pipe')
+    X_val_trans.columns = X_train_trans.columns.str.replace('inputer_pipe','numerical_pipe')
+
+    
     print('Save data transform')
     pipe_to_save = os.path.join(
         params['pipe'],
@@ -85,11 +92,13 @@ if __name__ == "__main__":
         'val_size' : config['feat_selection_params']['val_size'],
         'cols_2_drop' : config['feat_selection_params']['cols_2_drop'],
         'num_var' : config['feat_selection_params']['num_var'],
-        'cat_var' : config['feat_selection_params']['cat_var'],
-        'target' : config['feat_selection_params']['target'],
-        'pipe': config['pipe_feat_eng']['path'], 
-        'reports': config['save_reports']['path_reports'],
-        'pipe_version': config['feat_selection_params']['pipe_version']        
+        'num_var_1' : config['feat_selection_params']['num_var_1'],
+        'num_var_2' : config['feat_selection_params']['num_var_2'],
+        'cat_var':config['feat_selection_params']['cat_var'],
+        'target':config['feat_selection_params']['target'],
+        'pipe':config['pipe_feat_eng']['path'], 
+        'reports':config['save_reports']['path_reports'],
+        'pipe_version':config['feat_selection_params']['pipe_version']        
         }
     
     run_feature_eng(**params)

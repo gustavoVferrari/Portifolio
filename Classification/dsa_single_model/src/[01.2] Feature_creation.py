@@ -15,7 +15,12 @@ with open(yaml_path, "r", encoding="utf-8") as f:
 def feature_creation(dataset:str, **params):
 
     df = pd.read_csv(params['raw'])    
-     
+    
+    df['insulina'] = df['insulina'].apply(lambda row: np.nan if row == 0 else row)
+    df['glicose'] = df['glicose'].apply(lambda row: np.nan if row == 0 else row)
+    df['grossura_pele'] = df['grossura_pele'].apply(lambda row: np.nan if row == 0 else row)
+    df['bmi'] = df['bmi'].apply(lambda row: np.nan if row == 0 else row)
+    df['pressao_sanguinea'] = df['pressao_sanguinea'].apply(lambda row: np.nan if row == 0 else row)
     dict_cols = dict(columns = list(df.columns))
     
     with open(os.path.join(params['reports'], f'{dataset}_columns.json'), 'w') as arquivo:

@@ -29,7 +29,10 @@ def submission(**params):
     with open(pipe_path, "rb") as file:
         pipe = pickle.load(file)
     # appply pipe
-    df_test_transf = pipe.transform(df_test) 
+    df_test_transf = pipe.transform(df_test)     
+
+    df_test_transf.columns = df_test_transf.columns.str.replace('inputer_pipe','numerical_pipe')
+    df_test_transf.columns = df_test_transf.columns.str.replace('inputer_pipe','numerical_pipe')
     
     df_test_transf.drop(
         columns = params['cols_2_drop_model'],

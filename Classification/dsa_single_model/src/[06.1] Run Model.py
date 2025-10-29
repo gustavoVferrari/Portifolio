@@ -13,8 +13,8 @@ SCRIPTS_TO_RUN = [
     '[01.3] Feature_analysis.py',
     '[02.1] Feature_eng.py',
     '[02.2] Feature_selection.py',
-    '[02.3] Model Selection.py',
-    '[03.1] Train Model.py',
+    '[03.1] Model Selection.py',
+    '[03.2] Train Model.py',
     '[04.1] Predict.py',
     # '[05.1] Model explicability.py',
     '[05.2] Submission.py'        
