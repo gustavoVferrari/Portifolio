@@ -1,0 +1,152 @@
+## Data gathering
+data_gathering:
+  path: "C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Regression/house_prices_single_model/data/raw"
+  train: "train.csv"
+  test: "test.csv"
+  competition: "house-prices-advanced-regression-techniques"
+
+processed_data:
+  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Regression/house_prices_single_model/data/processed'
+  train: "train.parquet"
+  test: "test.parquet"
+
+## feat engineering
+pipe_feat_eng:
+  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Regression/house_prices_single_model/models'
+
+## Feature selection
+feat_selection:
+  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Regression/house_prices_single_model/data/processed'
+  input: "train.parquet"
+  X_train: "feat_X_train.parquet"
+  X_val: "feat_X_val.parquet"
+  y_train: "feat_y_train.parquet"
+  y_val: "feat_y_val.parquet"
+
+feat_selection_params:
+  pipe_version: 1
+  random_state: 23
+  pca_threshold: 0.95
+  val_size: 0.25
+  cols_2_drop:
+    - Id
+    - Alley 
+    - Fence 
+    - MiscFeature
+    - PoolQC
+    - MasVnrType
+    - BsmtHalfBath
+    - 3SsnPorch
+    - ScreenPorch
+    - PoolArea
+    - MiscVal
+    - Street 
+    - Utilities
+    - Condition2
+    - RoofStyle
+    - LowQualFinSF
+    - KitchenAbvGr
+    - BsmtFinType1
+    - BsmtFinType2
+    - Exterior1st
+    - Exterior2nd  
+  cat_var:
+    - MSZoning   
+    - LotShape
+    - LandContour  
+    - LotConfig
+    - LandSlope
+    - Neighborhood
+    - Condition1  
+    - BldgType
+    - HouseStyle  
+    - RoofMatl
+    - ExterQual
+    - ExterCond
+    - Foundation
+    - BsmtQual
+    - BsmtCond
+    - BsmtExposure
+    - Heating
+    - HeatingQC
+    - CentralAir
+    - Electrical
+    - KitchenQual
+    - Functional
+    - FireplaceQu
+    - GarageType
+    - GarageFinish
+    - GarageQual  
+    - PavedDrive  
+    - SaleType
+    - SaleCondition
+    - GarageCond        
+  num_var_1:
+    - MSSubClass
+    - OverallCond
+    - OverallQual
+    - YearBuilt
+    - YearRemodAdd
+    - BsmtUnfSF
+    - GrLivArea
+    - BsmtFullBath
+    - FullBath
+    - HalfBath
+    - BedroomAbvGr
+    - TotRmsAbvGrd
+    - Fireplaces
+    - GarageYrBlt
+    - GarageCars
+    - GarageArea
+    - MoSold
+    - YrSold
+    - BsmtFinSF2
+    - EnclosedPorch
+    
+  num_var_2:
+    - LotFrontage
+    - LotArea
+    - MasVnrArea
+    - BsmtFinSF1    
+    - TotalBsmtSF
+    - 1stFlrSF
+    - 2ndFlrSF
+    - WoodDeckSF
+    - OpenPorchSF
+  target: 
+    - SalePrice
+
+## Model selection
+model_selection:  
+  cols_2_drop:
+    - numerical_pipe__OpenPorchSF
+    - numerical_pipe__MSSubClass
+    - numerical_pipe__BsmtFinSF2
+    - numerical_pipe__MoSold
+    - numerical_pipe__YrSold
+    - numerical_pipe__OverallCond
+    - numerical_pipe__BsmtFullBath
+
+  score: 'accuracy'
+model:
+  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Regression/house_prices_single_model/models'
+  model_version: 1
+
+## Model
+train_model: 
+  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Regression/house_prices_single_model/data/processed'
+  model_params: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Regression/house_prices_single_model/data/reports'
+
+
+## Save reports
+save_reports:
+  path_reports: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Regression/house_prices_single_model/data/reports'
+  path_plot: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Regression/house_prices_single_model/plots'
+
+## Prediction
+output_predict:
+  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Regression/house_prices_single_model/data/processed'
+
+## Submission
+submission:
+  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Regression/house_prices_single_model/data/submission'

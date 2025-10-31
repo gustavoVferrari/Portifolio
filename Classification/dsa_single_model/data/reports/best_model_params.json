@@ -1,7 +1,0 @@
-{
-    "lr": {
-        "class_weight": null,
-        "max_iter": 50,
-        "solver": "newton-cg"
-    }
-}
