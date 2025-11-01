@@ -119,15 +119,15 @@ feat_selection_params:
 ## Model selection
 model_selection:  
   cols_2_drop:
-    - numerical_pipe__OpenPorchSF
-    - numerical_pipe__MSSubClass
-    - numerical_pipe__BsmtFinSF2
-    - numerical_pipe__MoSold
-    - numerical_pipe__YrSold
-    - numerical_pipe__OverallCond
-    - numerical_pipe__BsmtFullBath
+    # - numerical_pipe__OpenPorchSF
+    # - numerical_pipe__MSSubClass
+    # - numerical_pipe__BsmtFinSF2
+    # - numerical_pipe__MoSold
+    # - numerical_pipe__YrSold
+    # - numerical_pipe__OverallCond
+    # - numerical_pipe__BsmtFullBath
 
-  score: 'accuracy'
+  score: 'neg_root_mean_squared_errors'
 model:
   path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Regression/house_prices_single_model/models'
   model_version: 1

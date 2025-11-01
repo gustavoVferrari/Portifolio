@@ -1,6 +1,6 @@
 
 import sys
-sys.path.append(r'C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio/Classification/dsa_single_model')
+sys.path.append(r'C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio/Regression/house_prices_single_model/src')
 
 import os
 import pandas as pd
@@ -11,15 +11,15 @@ from sklearn.pipeline import make_pipeline
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import StratifiedKFold
 from sklearn.ensemble import (
-    RandomForestClassifier, 
-    AdaBoostClassifier, 
-    GradientBoostingClassifier, 
-    HistGradientBoostingClassifier)
-from sklearn.neural_network import MLPClassifier
+    RandomForestRegressor, 
+    AdaBoostRegressor, 
+    GradientBoostingRegressor, 
+    HistGradientBoostingRegressor)
+from sklearn.neural_network import MLPRegressor
 from sklearn.metrics import (
-    f1_score,
-    accuracy_score,     
-    roc_auc_score)
+    root_mean_squared_error,
+    r2_score    
+    )
 from sklearn.model_selection import GridSearchCV
 import yaml
 from sklearn.decomposition import PCA
@@ -29,7 +29,7 @@ warnings.filterwarnings('ignore')
 pd.set_option('display.float_format', '{:.4f}'.format)
 
 
-yaml_path = r"Classification\dsa_single_model\src\config.yaml"
+yaml_path = r"Regression\house_prices_single_model\src\config.yaml"
 with open(yaml_path, "r", encoding="utf-8") as f:
     config = yaml.safe_load(f)
 
@@ -40,12 +40,12 @@ def model_selection(**params):
     y_train = pd.read_parquet(params_['y_train_feat_sel'])
     y_val = pd.read_parquet(params_['y_val_feat_sel']) 
     
-    X_train.drop(
-        columns=config['model_selection']['cols_2_drop'],
-        inplace=True)
-    X_val.drop(
-        columns=config['model_selection']['cols_2_drop'],
-        inplace=True)
+    # X_train.drop(
+    #     columns=config['model_selection']['cols_2_drop'],
+    #     inplace=True)
+    # X_val.drop(
+    #     columns=config['model_selection']['cols_2_drop'],
+    #     inplace=True)
     
     y_train = y_train.astype('int')
     y_val = y_val.astype('int')
@@ -53,7 +53,7 @@ def model_selection(**params):
     
     models = dict(
     rf = [
-        RandomForestClassifier(random_state=seed_),
+        RandomForestRegressor(random_state=seed_),
         {'randomforestclassifier__n_estimators':[100, 150, 200, 250],
          'randomforestclassifier__criterion': ['gini', 'entropy'], 
          'randomforestclassifier__max_depth': [None, 2, 3, 5, 10],
@@ -63,13 +63,13 @@ def model_selection(**params):
         ]
     ,
     ab = [
-        AdaBoostClassifier(random_state=seed_),
+        AdaBoostRegressor(random_state=seed_),
         {'adaboostclassifier__n_estimators':[150, 200, 250, 300],
          'adaboostclassifier__learning_rate': [0.01, 0.1, 0.001]}
         ]
     ,    
     gb = [
-        GradientBoostingClassifier(random_state=seed_),
+        GradientBoostingRegressor(random_state=seed_),
         {'gradientboostingclassifier__n_estimators':[100, 150, 200, 250],
          'gradientboostingclassifier__learning_rate': [0.01, 0.1, 0.001]}
         ]
@@ -82,13 +82,13 @@ def model_selection(**params):
         }
         ],     
     ml = [
-        MLPClassifier(random_state=seed_),
+        MLPRegressor(random_state=seed_),
         {'mlpclassifier__hidden_layer_sizes':[10, 20, 30],
          'mlpclassifier__activation': ['relu', 'tanh'],
          'mlpclassifier__learning_rate_init':[0.01, 0.001]
          }
         ],
-    hg = [HistGradientBoostingClassifier(),
+    hg = [HistGradientBoostingRegressor(),
           {'histgradientboostingclassifier__learning_rate': [0.01, 0.1, 0.001],
            'histgradientboostingclassifier__max_iter': [50, 100, 150],
            'histgradientboostingclassifier__class_weight': [None, {0:1,1:2}, {0:1,1:4}]
@@ -128,9 +128,8 @@ def model_selection(**params):
         pred_test = grid.predict(X_val)
         
         dict_metrics[model] = [
-            f1_score(y_val, pred_test),
-            accuracy_score(y_val, pred_test), 
-            roc_auc_score(y_val, pred_proba_test)
+            r2_score(y_val, pred_test),
+            root_mean_squared_error(y_val, pred_test)           
             ] 
         
         # Best params    
@@ -142,15 +141,15 @@ def model_selection(**params):
     
     metrics =  pd.DataFrame(
         dict_metrics, 
-        index=['f1', 'accuracy','roc'])
+        index=['r2', 'rmse'])
     
     metrics.to_json(
         os.path.join(params_['reports'], 
                      'model_comparison.json')
         )
     
-    best_idx = pd.DataFrame(dict_metrics, index=['f1', 'accuracy', 'roc']).loc['roc'].argmax()
-    best_idx = pd.DataFrame(dict_metrics, index=['f1', 'accuracy', 'roc']).columns[best_idx]
+    best_idx = pd.DataFrame(dict_metrics, index=['r2', 'rmse' ]).loc['rmse'].argmax()
+    best_idx = pd.DataFrame(dict_metrics, index=['r2', 'rmse' ]).columns[best_idx]
     print("Best model:", best_idx)
     
     # Cross-Validation with best model
