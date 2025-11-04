@@ -8,7 +8,7 @@ path = r'C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio/Classifica
 
 
 SCRIPTS_TO_RUN = [
-    # '[01.1] Data_gathering.py',
+    '[01.1] Data_gathering.py',
     '[01.2] Feature_creation.py',
     '[01.3] Feature_analysis.py',
     '[02.1] Feature_eng.py',
