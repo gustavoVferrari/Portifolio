@@ -1,5 +1,5 @@
 import sys
-sys.path.append(r'C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio/Regression/house_prices_single_model')
+sys.path.append(r'C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio/Regression/house_prices_tf')
 
 import os
 import json
@@ -8,12 +8,12 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 from scipy import stats
-from sklearn.feature_selection import f_classif
-from sklearn.feature_selection import mutual_info_classif
+from sklearn.feature_selection import f_classif, mutual_info_classif
+from statsmodels.stats.outliers_influence import variance_inflation_factor
 import yaml
 
 # open yaml
-yaml_path = r"Regression\house_prices_single_model\src\config.yaml"
+yaml_path = r"Regression\house_prices_tf\src\config.yaml"
 with open(yaml_path, "r", encoding="utf-8") as f:
     config = yaml.safe_load(f)
     
@@ -28,7 +28,6 @@ def feature_selection_univariate(**params):
     cols = X_train.filter(like='categorical').columns.tolist()    
     
     y_train = y_train.astype('int')
-
     chi_ls = []
 
     # select only categorical features
@@ -77,8 +76,8 @@ def feature_selection_univariate(**params):
     
     save_path = os.path.join(
         params['save_plot'],
-        "feat_importance_anova.png"
-    )
+        "feat_importance_anova.png")
+    
     plt.axhline(y=0.05, color='r', linestyle='-')
     plt.ylabel('p value')
     plt.title('Feature importance based on anova')
@@ -98,8 +97,8 @@ def feature_selection_univariate(**params):
     mi.plot.bar(rot=90, figsize=(20, 5))
     save_path = os.path.join(
         params['save_plot'],
-        "feat_importance_mutual_information.png"
-    )
+        "feat_importance_mutual_information.png" )
+    
     plt.ylabel('mutual information score')
     plt.title('Feature importance based on mutual information')
     print("Saving plot:", save_path)
@@ -112,8 +111,7 @@ def feature_selection_univariate(**params):
         # 'categorical_features_2_remove': chi_remove.tolist(),
         'numerical_features_2_remove': anova_remove.tolist(),
         'mutual_information':mi
-        }
-    
+        }    
     
     select = X_train.columns.str.contains('numerical')
     cols = X_train.columns
@@ -124,18 +122,40 @@ def feature_selection_univariate(**params):
 
     plt.figure(figsize=(24,24))
     plt.title("Correlation Matrix feat selection")
-    sns.heatmap(corr_matrix.iloc[1:,:-1], 
-                mask=mask , 
-                annot=True, 
-                cmap='flare', 
-                linewidths=2, 
-                square=True);
-    path_save = os.path.join(params['save_plot'], 'corr_data_feat_selection.png')
-    plt.savefig(path_save, dpi=300, bbox_inches="tight")
+    sns.heatmap(
+        corr_matrix.iloc[1:,:-1], 
+        mask=mask , 
+        annot=True, 
+        cmap='flare', 
+        linewidths=2, 
+        square=True);
+    
+    path_save = os.path.join(
+        params['save_plot'], 
+        'corr_data_feat_selection.png'
+        )
+    plt.savefig(
+        path_save, 
+        dpi=300, 
+        bbox_inches="tight")
     plt.close()
     
     with open(os.path.join(params['save_report'],"feature_selection.json"), "w") as f:
         json.dump(report, f)
+        
+    # variance_inflation_factor
+    X_scaled = pd.DataFrame(
+        X_train[cols[select]],
+        columns = X_train[cols[select]].columns)  
+    
+    vif_data = pd.DataFrame()
+    vif_data["Variável"] = X_scaled.columns
+    vif_data["VIF"] = [variance_inflation_factor(X_scaled.values, i)
+                       for i in range(X_scaled.shape[1])]
+    vif_data.sort_values(by="VIF", ascending=False, inplace=True)
+    print(vif_data)
+    with open(os.path.join(params['save_report'],"vif.json"), "w") as j:
+        json.dump(report, j)
    
     
 if __name__ == "__main__":

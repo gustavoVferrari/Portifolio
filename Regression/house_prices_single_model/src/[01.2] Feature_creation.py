@@ -14,7 +14,9 @@ with open(yaml_path, "r", encoding="utf-8") as f:
 
 def feature_creation(dataset:str, **params):
 
-    df = pd.read_csv(params['raw'])    
+    df = pd.read_csv(params['raw'])   
+    
+    df['GarageAreaMod'] = df['GarageArea'].apply(lambda x: np.nan if x == 0 else x)  
 
     dict_cols = dict(columns = list(df.columns))    
     with open(os.path.join(params['reports'], f'{dataset}_columns.json'), 'w') as arquivo:

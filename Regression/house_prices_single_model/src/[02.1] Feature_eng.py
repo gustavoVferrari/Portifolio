@@ -52,7 +52,7 @@ def run_feature_eng(**params):
     print('Save data transform')
     pipe_to_save = os.path.join(
         params['pipe'],
-        f'feat_sel_pipe_{params['pipe_version']}.pkl'
+        f'feat_sel_pipe_{params["pipe_version"]}.pkl'
         )
 
     with open(pipe_to_save, 'wb') as arquivo:
@@ -77,8 +77,8 @@ if __name__ == "__main__":
         
     params = {
         'input_data':os.path.join(
-            config['feat_selection']['path'],
-            config['feat_selection']['input']),                
+            config['processed_data']['path'],
+            config['processed_data']['train']),                
         'output_x_train' : os.path.join(
             config['feat_selection']['path'],
             config['feat_selection']['X_train']),        

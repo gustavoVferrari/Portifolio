@@ -1,6 +1,11 @@
 from sklearn.base import BaseEstimator, TransformerMixin
 import pandas as pd
 import numpy as np
+import tensorflow as tf
+from tensorflow import keras
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense
+
 
 class MedianByYTransformer(BaseEstimator, TransformerMixin):
     """
@@ -51,3 +56,32 @@ class MedianByYTransformer(BaseEstimator, TransformerMixin):
             X[col] = X[col].fillna(global_medians.get(col, np.nan))
 
         return X
+
+
+def modelo_regressao_tf(input_shape):
+    """
+    Cria e retorna um modelo Keras Sequential para regressão.
+    
+    Args:
+        input_shape (int): O número de colunas (features) de entrada.
+    """
+    # PEP 8 recomenda o uso de parênteses para quebrar linhas longas
+    model = Sequential(
+        [
+            # Primeira camada densa com ativação ReLU (comum)
+            Dense(98, activation='relu', input_shape=(input_shape,)),
+            # Camada oculta
+            Dense(98, activation='relu'),
+            # Camada oculta
+            Dense(98, activation='relu'),
+            # # Camada oculta
+            Dense(98, activation='relu'),
+            # Camada oculta
+            Dense(98, activation='relu'),
+            # # Camada oculta
+            # Dense(64, activation='relu'),
+            # Camada de saída: 1 neurônio, SEM ativação para regressão
+            Dense(1),
+        ]
+    )
+    return model

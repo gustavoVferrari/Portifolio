@@ -1,5 +1,5 @@
 import sys
-sys.path.append(r'C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio/Regression/house_prices_single_model')
+sys.path.append(r'C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio/Regression/house_prices_tf')
 import json
 import numpy as np
 import os
@@ -7,7 +7,7 @@ import pandas as pd
 import yaml
 
 # Carregando o arquivo de configuração
-yaml_path = r"Regression\house_prices_single_model\src\config.yaml"
+yaml_path = r"Regression\house_prices_tf\src\config.yaml"
 with open(yaml_path, "r", encoding="utf-8") as f:
     config = yaml.safe_load(f)
     

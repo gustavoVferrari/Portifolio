@@ -8,7 +8,7 @@ import os
 import json
 
 # Carregando as configurações do arquivo YAML
-yaml_path = r"C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio\Regression/house_prices_single_model\src\config.yaml"
+yaml_path = r"Regression/house_prices_single_model\src\config.yaml"
 with open(yaml_path, "r", encoding="utf-8") as f:
     config = yaml.safe_load(f)
     
@@ -34,10 +34,10 @@ def submission(**params):
     df_test_transf.columns = df_test_transf.columns.str.replace('num_pipe_1','numerical_pipe')
     df_test_transf.columns = df_test_transf.columns.str.replace('num_pipe_2','numerical_pipe')
     
-    # df_test_transf.drop(
-    #     columns = params['cols_2_drop_model'],
-    #     inplace=True
-    # )   
+    df_test_transf.drop(
+        columns = params['cols_2_drop_model'],
+        inplace=True
+    )   
     
     model_path = os.path.join(
         params['model'],
@@ -54,7 +54,7 @@ def submission(**params):
     #     report = json.load(file)
         
     # predict    
-    y_test_id.loc[:,f'{params['target'][0]}'] = model.predict(df_test_transf)
+    y_test_id.loc[:,f'{params["target"][0]}'] = model.predict(df_test_transf)
     
     y_test_id.to_csv(
         os.path.join(params['submission'],

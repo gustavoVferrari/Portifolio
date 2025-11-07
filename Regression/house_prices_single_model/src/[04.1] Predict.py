@@ -21,9 +21,9 @@ with open(yaml_path, "r", encoding="utf-8") as f:
 def predict(**params):
     X_val = pd.read_parquet(params_['X_val_feat_sel'])
     y_val = pd.read_parquet(params_['y_val_feat_sel'])
-    # X_val.drop(
-    #     columns=config['model_selection']['cols_2_drop'],
-    #     inplace=True) 
+    X_val.drop(
+        columns=params_['cols_2_drop'],
+        inplace=True) 
     y_val = y_val.astype('int')      
  
     model_path = os.path.join(
@@ -71,6 +71,7 @@ if __name__ == "__main__":
             config['feat_selection']['path'],
             config['feat_selection']['y_val']),
         'model': config['model']['path'],
+        'cols_2_drop': config['model_selection']['cols_2_drop'],
         'report': config['save_reports']['path_reports'],
         'predictions': config['output_predict']['path'],
         'removed_cols': config['save_reports']['path_reports'],

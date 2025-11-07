@@ -34,9 +34,9 @@ def train_model(**params):
     X_train = pd.read_parquet(params_['X_train_feat_sel'])
     y_train = pd.read_parquet(params_['y_train_feat_sel']) 
     
-    # X_train.drop(
-    #     columns=config['model_selection']['cols_2_drop'],
-    #     inplace=True)
+    X_train.drop(
+        columns=params_['cols_2_drop'],
+        inplace=True)
        
     y_train = y_train.astype('int')
     
@@ -69,22 +69,16 @@ def train_model(**params):
             clf_model)
     
     print("train model")
-    pipeline.fit(X_train, y_train)
-    
-    y_pred_train = pipeline.predict(X_train)
-    # y_proba_train = pipeline.predict_proba(X_train)
-    
+    pipeline.fit(X_train, y_train)    
+    y_pred_train = pipeline.predict(X_train)    
     pd.DataFrame(y_pred_train).to_parquet(
         params_['y_pred_train_path'],
         )    
-    # pd.DataFrame(y_proba_train).to_parquet(
-    #     params_['y_proba_train_path'],
-    #     )    
-    
+        
     print("saving model pkl")
     model_path = os.path.join(
-        config['model']['path'],
-        f'model_{params_['model_version']}.pkl')
+        params_["model"],
+        f'model_{params_["model_version"]}.pkl')
     
     with open(model_path, 'wb') as arquivo:
         pickle.dump(pipeline, arquivo)
@@ -123,6 +117,7 @@ if __name__ == "__main__":
         'y_proba_train_path': os.path.join(
             config['train_model']['path'],
             'y_proba_train.parquet'),
+        'cols_2_drop': config['model_selection']['cols_2_drop'],
         'report': config['save_reports']['path_reports'],
         'model': config['model']['path'],
         'model_params': config['train_model']['model_params'],

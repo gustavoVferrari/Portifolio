@@ -1,5 +1,5 @@
 import sys
-sys.path.append(r'C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio/Regression/house_prices_single_model')
+sys.path.append(r'C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio/Regression/house_prices_tf')
 import json
 import pandas as pd
 import yaml
@@ -10,7 +10,7 @@ from sklearn.model_selection import train_test_split
 
 
 # Load config file
-yaml_path = r"Regression\house_prices_single_model\src\config.yaml"
+yaml_path = r"Regression\house_prices_tf\src\config.yaml"
 with open(yaml_path, "r", encoding="utf-8") as f:
     config = yaml.safe_load(f)
 
@@ -18,15 +18,15 @@ with open(yaml_path, "r", encoding="utf-8") as f:
 def run_feature_eng(**params):
     
     print('Begin Feature Eng')
-    df = pd.read_parquet(params['input_data'])
+    df = pd.read_parquet(params["input_data"])
     df.drop(
-        columns=params['cols_2_drop'], 
+        columns=params["cols_2_drop"], 
         inplace=True)  
     
     
     print('Split data into train and validation')
     X_train, X_val, y_train, y_val =  train_test_split(
-        df.drop(columns=params['target']), 
+        df.drop(columns=params["target"]), 
         df[params['target']],
         test_size=params['val_size'], 
         random_state=params['random_state'])
@@ -52,7 +52,7 @@ def run_feature_eng(**params):
     print('Save data transform')
     pipe_to_save = os.path.join(
         params['pipe'],
-        f'feat_sel_pipe_{params['pipe_version']}.pkl'
+        f'feat_sel_pipe_{params["pipe_version"]}.pkl'
         )
 
     with open(pipe_to_save, 'wb') as arquivo:
@@ -77,8 +77,8 @@ if __name__ == "__main__":
         
     params = {
         'input_data':os.path.join(
-            config['feat_selection']['path'],
-            config['feat_selection']['input']),                
+            config['processed_data']['path'],
+            config['processed_data']['train']),                
         'output_x_train' : os.path.join(
             config['feat_selection']['path'],
             config['feat_selection']['X_train']),        

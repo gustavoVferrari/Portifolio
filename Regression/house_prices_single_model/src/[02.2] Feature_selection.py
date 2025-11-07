@@ -10,6 +10,8 @@ import matplotlib.pyplot as plt
 from scipy import stats
 from sklearn.feature_selection import f_classif
 from sklearn.feature_selection import mutual_info_classif
+from statsmodels.stats.outliers_influence import variance_inflation_factor
+from sklearn.preprocessing import StandardScaler
 import yaml
 
 # open yaml
@@ -135,6 +137,19 @@ def feature_selection_univariate(**params):
     plt.close()
     
     with open(os.path.join(params['save_report'],"feature_selection.json"), "w") as f:
+        json.dump(report, f)
+        
+    # variance_inflation_factor
+    X_scaled = pd.DataFrame(
+        StandardScaler().fit_transform(X_train[cols[select]]),
+        columns = X_train[cols[select]].columns)  
+    
+    vif_data = pd.DataFrame()
+    vif_data["Variável"] = X_scaled.columns
+    vif_data["VIF"] = [variance_inflation_factor(X_scaled.values, i)
+                       for i in range(X_scaled.shape[1])]
+    vif_data.sort_values(by="VIF", ascending=False, inplace=True)
+    with open(os.path.join(params['save_report'],"vif.json"), "w") as f:
         json.dump(report, f)
    
     

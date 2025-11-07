@@ -40,12 +40,12 @@ def model_selection(**params):
     y_train = pd.read_parquet(params_['y_train_feat_sel'])
     y_val = pd.read_parquet(params_['y_val_feat_sel']) 
     
-    # X_train.drop(
-    #     columns=config['model_selection']['cols_2_drop'],
-    #     inplace=True)
-    # X_val.drop(
-    #     columns=config['model_selection']['cols_2_drop'],
-    #     inplace=True)
+    X_train.drop(
+        columns=params_['cols_2_drop'],
+        inplace=True)
+    X_val.drop(
+        columns=params_['cols_2_drop'],
+        inplace=True)
     
     y_train = y_train.astype('int')
     y_val = y_val.astype('int')
@@ -69,7 +69,7 @@ def model_selection(**params):
     ,    
     gb = [
         GradientBoostingRegressor(random_state=seed_),
-        {'gradientboostingregressor__n_estimators':[100, 150, 200, 250],
+        {'gradientboostingregressor__n_estimators':[100, 150, 200, 250, 300],
          'gradientboostingregressor__learning_rate': [0.01, 0.1, 0.001]}
         ]
     ,
@@ -80,7 +80,7 @@ def model_selection(**params):
         ],     
     ml = [
         MLPRegressor(random_state=seed_),
-        {'mlpregressor__hidden_layer_sizes':[ 50, 70, 100, 120],
+        {'mlpregressor__hidden_layer_sizes':[ 50, 70, 100, 120, 150],
          'mlpregressor__activation': ['relu', 'tanh'],
          'mlpregressor__learning_rate_init':[0.1, 0.01, 0.001]
          }
@@ -108,7 +108,7 @@ def model_selection(**params):
 
         pca_thres = params_['pca_threshold']
         grid_pipeline = make_pipeline(
-            # PCA(n_components=pca_thres, svd_solver='full'), 
+            PCA(n_components=pca_thres, svd_solver='full'), 
             regressor)
         
         grid = GridSearchCV(

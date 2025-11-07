@@ -21,6 +21,16 @@ def feat_eng_pipeline(
         imputation_method = 'median',
         variables = num_var_1)
     
+    outlier_1 = Winsorizer(variables=num_var_1, capping_method='gaussian', fold=4)
+    
+    log_transf = LogCpTransformer(variables=num_var_1)  
+    
+    num_1_pipe = make_pipeline(
+        median_var_1,
+        outlier_1,
+        # log_transf,
+        # discretizer                     
+        )
     
     # numerical var 2
     # log transformation
@@ -56,7 +66,7 @@ def feat_eng_pipeline(
     rare_label = make_pipeline(
         RareLabelEncoder(
         variables=cat_var,
-        tol=.05,
+        tol=.10,
         n_categories=2
     ))
     
@@ -65,7 +75,7 @@ def feat_eng_pipeline(
     
     preprocessor  = ColumnTransformer(
         transformers = [
-            ("num_pipe_1", median_var_1, num_var_1),
+            ("num_pipe_1", num_1_pipe, num_var_1),
             ("num_pipe_2", num_2_pipe, num_var_2),
             ("categorical_pipe", categorical_pipe, cat_var)
             
@@ -73,7 +83,7 @@ def feat_eng_pipeline(
     
     pipe = make_pipeline(   
         preprocessor.set_output(transform="pandas"),
-        MinMaxScaler().set_output(transform="pandas")               
+        # MinMaxScaler().set_output(transform="pandas")               
         )      
     
     return pipe

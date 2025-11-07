@@ -1,22 +1,22 @@
 ## Data gathering
 data_gathering:
-  path: "C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Regression/house_prices_single_model/data/raw"
+  path: "C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Regression/house_prices_tf/data/raw"
   train: "train.csv"
   test: "test.csv"
   competition: "house-prices-advanced-regression-techniques"
 
 processed_data:
-  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Regression/house_prices_single_model/data/processed'
+  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Regression/house_prices_tf/data/processed'
   train: "train.parquet"
   test: "test.parquet"
 
 ## feat engineering
 pipe_feat_eng:
-  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Regression/house_prices_single_model/models'
+  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Regression/house_prices_tf/models'
 
 ## Feature selection
 feat_selection:
-  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Regression/house_prices_single_model/data/processed'
+  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Regression/house_prices_tf/data/processed'
   input: "train.parquet"
   X_train: "feat_X_train.parquet"
   X_val: "feat_X_val.parquet"
@@ -58,10 +58,8 @@ feat_selection_params:
     - MoSold
     - EnclosedPorch
     - BsmtFinSF2
-    - YrSold   
-    - OverallCond
+    - YrSold       
     - BsmtFullBath
-    - HouseStyle 
     - PavedDrive
     - GarageCars
     - TotRmsAbvGrd
@@ -75,11 +73,13 @@ feat_selection_params:
     - LotShape 
     - Fireplaces 
     - BsmtUnfSF
-    - LotFrontage
-    - Neighborhood 
+    - LotFrontage     
     - LotConfig
-  cat_var:
-    - MSZoning                
+    - GarageCond 
+    - MSZoning 
+    - FullBath
+    - 1stFlrSF
+  cat_var:                   
     - ExterQual    
     - Foundation
     - BsmtQual
@@ -93,22 +93,23 @@ feat_selection_params:
     - GarageQual    
     - SaleType
     - SaleCondition
-    - GarageCond            
+    - Neighborhood
+    - HouseStyle                   
   num_var_1:     
     - OverallQual
+    - OverallCond
     - YearBuilt
     - YearRemodAdd    
-    - GrLivArea    
-    - FullBath
+    - GrLivArea        
     - HalfBath
     - BedroomAbvGr               
     - GarageArea    
+    
   num_var_2:    
     - LotArea
     - MasVnrArea
     - BsmtFinSF1    
     - TotalBsmtSF
-    - 1stFlrSF
     - 2ndFlrSF
     - WoodDeckSF
     - OpenPorchSF
@@ -118,27 +119,30 @@ feat_selection_params:
 ## Model selection
 model_selection:  
   cols_2_drop:
-
+  - categorical_pipe__Foundation_CBlock
+  - categorical_pipe__BsmtCond_TA
+  - categorical_pipe__BsmtExposure_No
+  - categorical_pipe__SaleCondition_Normal
   score: 'neg_root_mean_squared_error'
 model:
-  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Regression/house_prices_single_model/models'
+  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Regression/house_prices_tf/models'
   model_version: 1
 
 ## Model
 train_model: 
-  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Regression/house_prices_single_model/data/processed'
-  model_params: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Regression/house_prices_single_model/data/reports'
+  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Regression/house_prices_tf/data/processed'
+  model_params: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Regression/house_prices_tf/data/reports'
 
 
 ## Save reports
 save_reports:
-  path_reports: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Regression/house_prices_single_model/data/reports'
-  path_plot: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Regression/house_prices_single_model/plots'
+  path_reports: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Regression/house_prices_tf/data/reports'
+  path_plot: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Regression/house_prices_tf/plots'
 
 ## Prediction
 output_predict:
-  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Regression/house_prices_single_model/data/processed'
+  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Regression/house_prices_tf/data/processed'
 
 ## Submission
 submission:
-  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Regression/house_prices_single_model/data/submission'
+  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Regression/house_prices_tf/data/submission'

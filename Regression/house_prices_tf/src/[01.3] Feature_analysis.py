@@ -1,5 +1,5 @@
 import sys
-sys.path.append(r'C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio/Regression/house_prices_single_model')
+sys.path.append(r'C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio/Regression/house_prices_tf')
 import json
 import matplotlib.pyplot as plt
 import numpy as np
@@ -10,7 +10,7 @@ import yaml
 from collections import Counter
 
 # Carregando o arquivo de configuração
-yaml_path = r"Regression/house_prices_single_model\src\config.yaml"
+yaml_path = r"Regression/house_prices_tf\src\config.yaml"
 with open(yaml_path, "r", encoding="utf-8") as f:
     config = yaml.safe_load(f)
     
@@ -21,16 +21,22 @@ def feature_analysis(**params):
    
     # missing data plot
     df.isna().mean().plot.bar(title='missing data', figsize=(20,10))
-    path_save = os.path.join(params['save_plot'], 'missing_data.png')
-    plt.savefig(path_save, dpi=300, bbox_inches="tight")
+    path_save = os.path.join(
+        params['save_plot'], 
+        'missing_data.png')
+    plt.savefig(path_save, 
+                dpi=300, 
+                bbox_inches="tight")
     plt.close() 
 
     categorical_col = list(df.select_dtypes(include=['category','object', 'bool']).columns)    
     numerical_col = list(df.select_dtypes(include=['number']).columns)
 
     # saving cols type
-    dict_var_type = dict(categorical_var = categorical_col,
-                         numerical_var = numerical_col)
+    dict_var_type = dict(
+        categorical_var = categorical_col,
+        numerical_var = numerical_col)
+    
     with open(os.path.join(params['reports'], 'cols_type.json'), 'w') as arquivo:
         json.dump(dict_var_type, arquivo)
     
@@ -55,14 +61,20 @@ def feature_analysis(**params):
 
     plt.figure(figsize=(24,24))
     plt.title("Correlation Matrix")
-    sns.heatmap(corr_matrix.iloc[1:,:-1], 
-                mask=mask , 
-                annot=True, 
-                cmap='flare', 
-                linewidths=2, 
-                square=True);
-    path_save = os.path.join(params['save_plot'], 'corr_data.png')
-    plt.savefig(path_save, dpi=300, bbox_inches="tight")
+    sns.heatmap(
+        corr_matrix.iloc[1:,:-1], 
+        mask=mask , 
+        annot=True, 
+        cmap='flare', 
+        linewidths=2, 
+        square=True);
+    path_save = os.path.join(
+        params['save_plot'], 
+        'corr_data.png')
+    plt.savefig(
+        path_save, 
+        dpi=300, 
+        bbox_inches="tight")
     plt.close()      
             
     

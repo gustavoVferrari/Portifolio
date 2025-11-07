@@ -26,7 +26,7 @@ feat_selection:
 feat_selection_params:
   pipe_version: 1
   random_state: 23
-  pca_threshold: 0.95
+  pca_threshold: 0.90
   val_size: 0.25
   cols_2_drop:
     - Id
@@ -78,48 +78,62 @@ feat_selection_params:
     - LotFrontage
     - Neighborhood 
     - LotConfig
-  cat_var:
-    - MSZoning                
+    - SaleCondition
+    - GarageType
+    - GarageCond 
+    - MSZoning   
+    - LotArea
+    - YearRemodAdd   
+    - BsmtExposure
+    - 2ndFlrSF  
+  cat_var:                 
     - ExterQual    
     - Foundation
     - BsmtQual
-    - BsmtCond
-    - BsmtExposure
+    - BsmtCond    
     - Heating    
     - CentralAir    
-    - KitchenQual        
-    - GarageType
+    - KitchenQual    
     - GarageFinish
     - GarageQual    
-    - SaleType
-    - SaleCondition
-    - GarageCond            
+    - SaleType                   
   num_var_1:     
-    - OverallQual
-    - YearBuilt
-    - YearRemodAdd    
+    - OverallQual    
     - GrLivArea    
     - FullBath
     - HalfBath
     - BedroomAbvGr               
-    - GarageArea    
-  num_var_2:    
-    - LotArea
+    # - GarageArea 
+    - GarageAreaMod
+    - 1stFlrSF  
+  num_var_2:        
     - MasVnrArea
     - BsmtFinSF1    
     - TotalBsmtSF
-    - 1stFlrSF
-    - 2ndFlrSF
     - WoodDeckSF
     - OpenPorchSF
+    - YearBuilt 
   target: 
     - SalePrice
 
 ## Model selection
 model_selection:  
   cols_2_drop:
+    - numerical_pipe__FullBath
+    - numerical_pipe__HalfBath
+    - numerical_pipe__BedroomAbvGr
+    - numerical_pipe__MasVnrArea
+    - numerical_pipe__BsmtFinSF1
+    - numerical_pipe__TotalBsmtSF
+    - numerical_pipe__WoodDeckSF
+    - numerical_pipe__OpenPorchSF
+    - categorical_pipe__BsmtCond_TA
+    - categorical_pipe__GarageFinish_RFn
+    - categorical_pipe__SaleType_WD
+    - categorical_pipe__GarageQual_TA
 
-  score: 'neg_root_mean_squared_error'
+
+  score: 'neg_mean_squared_error'
 model:
   path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Regression/house_prices_single_model/models'
   model_version: 1

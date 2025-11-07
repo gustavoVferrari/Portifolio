@@ -7,7 +7,6 @@ import os
 import seaborn as sns
 import pandas as pd
 import yaml
-from collections import Counter
 
 # Carregando o arquivo de configuração
 yaml_path = r"Regression/house_prices_single_model\src\config.yaml"
@@ -20,17 +19,24 @@ def feature_analysis(**params):
     df = pd.read_parquet(params['processed'])       
    
     # missing data plot
-    df.isna().mean().plot.bar(title='missing data', figsize=(20,10))
-    path_save = os.path.join(params['save_plot'], 'missing_data.png')
-    plt.savefig(path_save, dpi=300, bbox_inches="tight")
+    df.isna().mean().plot.bar(
+        title='missing data', 
+        figsize=(20,10))
+    path_save = os.path.join(
+        params['save_plot'], 
+        'missing_data.png')
+    plt.savefig(path_save, 
+                dpi=300, 
+                bbox_inches="tight")
     plt.close() 
 
     categorical_col = list(df.select_dtypes(include=['category','object', 'bool']).columns)    
     numerical_col = list(df.select_dtypes(include=['number']).columns)
 
     # saving cols type
-    dict_var_type = dict(categorical_var = categorical_col,
-                         numerical_var = numerical_col)
+    dict_var_type = dict(
+        categorical_var = categorical_col,
+        numerical_var = numerical_col)
     with open(os.path.join(params['reports'], 'cols_type.json'), 'w') as arquivo:
         json.dump(dict_var_type, arquivo)
     
@@ -55,14 +61,20 @@ def feature_analysis(**params):
 
     plt.figure(figsize=(24,24))
     plt.title("Correlation Matrix")
-    sns.heatmap(corr_matrix.iloc[1:,:-1], 
-                mask=mask , 
-                annot=True, 
-                cmap='flare', 
-                linewidths=2, 
-                square=True);
-    path_save = os.path.join(params['save_plot'], 'corr_data.png')
-    plt.savefig(path_save, dpi=300, bbox_inches="tight")
+    sns.heatmap(
+        corr_matrix.iloc[1:,:-1], 
+        mask=mask , 
+        annot=True, 
+        cmap='flare', 
+        linewidths=2, 
+        square=True);
+    path_save = os.path.join(
+        params['save_plot'], 
+        'corr_data.png')
+    plt.savefig(
+        path_save, 
+        dpi=300, 
+        bbox_inches="tight")
     plt.close()      
             
     
