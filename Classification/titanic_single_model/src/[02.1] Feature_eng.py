@@ -1,5 +1,5 @@
 import sys
-sys.path.append(r'C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio/Classification/titanic_version_1')
+sys.path.append(r'C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio/Classification/titanic_single_model')
 import json
 import pandas as pd
 import yaml
@@ -10,7 +10,7 @@ from sklearn.model_selection import train_test_split
 
 
 # Carregando as configurações do arquivo YAML
-yaml_path = r"Classification\titanic_version_1\src\config.yaml"
+yaml_path = r"Classification\titanic_single_model\src\config.yaml"
 with open(yaml_path, "r", encoding="utf-8") as f:
     config = yaml.safe_load(f)
 
@@ -42,7 +42,7 @@ def run_feature_eng(**params):
     print('Save data transform')
     pipe_to_save = os.path.join(
         params['pipe'],
-        f'feat_sel_pipe_{params['version']}.pkl'
+        f'feat_sel_pipe_{params["version"]}.pkl'
         )
 
     with open(pipe_to_save, 'wb') as arquivo:
@@ -89,7 +89,8 @@ if __name__ == "__main__":
         'target' : config['feat_selection_params']['target'],
         'pipe': config['pipe_feat_eng']['path'], 
         'reports': config['save_reports']['path_reports'],
-        'pipe_version': config['feat_selection_params']['pipe_version']        
+        'pipe_version': config['feat_selection_params']['pipe_version'],
+        'version' : config['model']['model_version']       
         }
     
     run_feature_eng(**params)

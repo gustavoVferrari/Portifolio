@@ -1,5 +1,5 @@
 import sys
-sys.path.append(r'C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio/Classification/titanic_version_1')
+sys.path.append(r'C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio/Classification/titanic_single_model')
 
 import os
 import json
@@ -17,7 +17,7 @@ import warnings
 warnings.filterwarnings('ignore')
 
 # open yaml
-yaml_path = r"Classification\titanic_version_1\src\config.yaml"
+yaml_path = r"Classification\titanic_single_model\src\config.yaml"
 with open(yaml_path, "r", encoding="utf-8") as f:
     config = yaml.safe_load(f)
     
