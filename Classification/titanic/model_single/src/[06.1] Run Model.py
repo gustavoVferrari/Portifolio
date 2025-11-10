@@ -1,23 +1,23 @@
 import sys
-sys.path.append(r'C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio/Classification/titanic_version_1/src')
+sys.path.append(r"Classification\titanic\model_single")
 import tqdm
 import subprocess
 import os
 
-path = r'C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio/Classification/titanic_version_1/src/' 
-
 
 SCRIPTS_TO_RUN = [
-    # '[01.1] Data_gathering.py',
-    '[01.2] Feature_creation.py',
+    '[01.1] Feature_creation.py',
+    '[01.2] Feature_analysis.py',
     '[02.1] Feature_eng.py',
     '[02.2] Feature_selection.py',
-    '[02.3] Model Selection.py',
-    '[03.1] Train Model.py',
+    '[02.3] Feature_selection_sfs.py',
+    '[03.1] Model Selection.py',
+    '[03.2] Train Model.py',
     '[04.1] Predict.py',
-    # '[05.1] Model explicability.py',
     '[05.2] Submission.py'        
 ]
+
+path = r'C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio\Classification\titanic\model_single\src' 
 
 def run_script_safely(path, script_path):    
     result = subprocess.run(

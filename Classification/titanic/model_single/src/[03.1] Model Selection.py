@@ -1,6 +1,6 @@
 
 import sys
-sys.path.append(r'C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio/Classification/titanic_single_model')
+sys.path.append(r"Classification\titanic\model_single")
 
 import os
 import pandas as pd
@@ -28,7 +28,7 @@ warnings.filterwarnings('ignore')
 pd.set_option('display.float_format', '{:.4f}'.format)
 
 
-yaml_path = r"Classification\titanic_single_model\src\config.yaml"
+yaml_path = r"Classification\titanic\model_single\src\config.yaml"
 with open(yaml_path, "r", encoding="utf-8") as f:
     config = yaml.safe_load(f)
 
@@ -234,20 +234,28 @@ if __name__ == "__main__":
      
     params_ = {        
         'X_train_feat_sel': os.path.join(
+             config['init_path'],
             config['feat_selection']['path'],
             config['feat_selection']['X_train']),
         'X_val_feat_sel': os.path.join(
+             config['init_path'],
             config['feat_selection']['path'],
             config['feat_selection']['X_val']),
         'y_train_feat_sel': os.path.join(
+             config['init_path'],
             config['feat_selection']['path'],
             config['feat_selection']['y_train']),
         'y_val_feat_sel': os.path.join(
+             config['init_path'],
             config['feat_selection']['path'],
             config['feat_selection']['y_val']),
-        'cols_2_drop':config['model_selection']['cols_2_drop'],
-        'reports': config['save_reports']['path_reports'],
-        'save_plot': config['save_reports']['path_plot'],
+        'reports': os.path.join(
+            config['init_path'],
+            config['save_reports']['path_reports']),
+        'save_plot': os.path.join(
+            config['init_path'],
+            config['save_reports']['path_plot']),
+        'cols_2_drop':config['model_selection']['cols_2_drop'],       
         'score': config['model_selection']['score'],
         'random_state': 42,
         'cv': 5,

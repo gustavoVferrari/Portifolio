@@ -1,0 +1,9 @@
+## Data gathering
+data_gathering:
+  init_path : "C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio"
+  path: "Classification/titanic/raw"
+  train: "train.csv"
+  test: "test.csv"
+  competition: "titanic"
+
+
