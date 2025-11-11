@@ -1,5 +1,5 @@
 import sys
-sys.path.append(r'C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio/Classification/titanic_voting_model')
+sys.path.append(r'Classification/titanic/model_voting')
 
 import os
 import json
@@ -12,7 +12,7 @@ from sklearn.feature_selection import mutual_info_classif
 import yaml
 
 # open yaml
-yaml_path = r"Classification\titanic_voting_model\src\config.yaml"
+yaml_path = r"Classification\titanic\model_voting\src\config.yaml"
 with open(yaml_path, "r", encoding="utf-8") as f:
     config = yaml.safe_load(f)
     
@@ -115,7 +115,7 @@ def feature_selection_univariate(**params):
         'mutual_information':mi
         }
     
-    with open(os.path.join(params['save_report'],"feature_selection.json"), "w") as f:
+    with open(os.path.join(params['reports'],"feature_selection.json"), "w") as f:
         json.dump(report, f)
    
     
@@ -123,19 +123,28 @@ if __name__ == "__main__":
     
     params = {        
         'X_train_feat_sel': os.path.join(
+             config['init_path'],
             config['feat_selection']['path'],
             config['feat_selection']['X_train']),
         'X_val_feat_sel': os.path.join(
+             config['init_path'],
             config['feat_selection']['path'],
             config['feat_selection']['X_val']),
         'y_train_feat_sel': os.path.join(
+             config['init_path'],
             config['feat_selection']['path'],
             config['feat_selection']['y_train']),
         'y_val_feat_sel':os.path.join(
+             config['init_path'],
             config['feat_selection']['path'],
             config['feat_selection']['y_val']),
-        'save_plot':config['save_reports']['path_plot'],
-        'save_report':config['save_reports']['path_reports']
+        'reports': os.path.join(
+            config['init_path'],
+            config['save_reports']['path_reports']),
+        'save_plot': os.path.join(
+            config['init_path'],
+            config['save_reports']['path_plot']
+        )
         }
     
     print("Load feature selection:", params)

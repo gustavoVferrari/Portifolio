@@ -1,5 +1,5 @@
 import sys
-sys.path.append(r'C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio/Classification/titanic_voting_model')
+sys.path.append(r'Classification/titanic/model_voting')
 import os
 import pickle
 import pandas as pd
@@ -27,7 +27,7 @@ warnings.filterwarnings('ignore')
 pd.set_option('display.float_format', '{:.4f}'.format)
 
 
-yaml_path = r"Classification\titanic_voting_model\src\config.yaml"
+yaml_path = r"Classification\titanic\model_voting\src\config.yaml"
 with open(yaml_path, "r", encoding="utf-8") as f:
     config = yaml.safe_load(f)
 
@@ -117,7 +117,7 @@ def train_model(**params):
     print(dict_score)
     
     metrics_path = os.path.join(
-        params_['report'],
+        params_['reports'],
         'train_model_metrics.json'
     )
     with open(metrics_path, 'w') as arquivo:
@@ -128,23 +128,33 @@ if __name__ == "__main__":
     
     params_ = {        
         'X_train_feat_sel': os.path.join(
+            config['init_path'],
             config['feat_selection']['path'],
             config['feat_selection']['X_train']),
         'y_train_feat_sel': os.path.join(
+            config['init_path'],
             config['feat_selection']['path'],
             config['feat_selection']['y_train']),
         'y_pred_train_path': os.path.join(
+            config['init_path'],
             config['train_model']['path'],
             'y_pred_train.parquet'),
         'y_proba_train_path': os.path.join(
+            config['init_path'],
             config['train_model']['path'],
             'y_proba_train.parquet'),
-        'report': config['save_reports']['path_reports'],
-        'model': config['model']['path'],
-        'model_params': config['train_model']['model_params'],
+        'reports': os.path.join(
+            config['init_path'],
+            config['save_reports']['path_reports']),
+        'model': os.path.join(
+            config['init_path'],
+            config['model']['path']),        
+        'model_params': os.path.join(
+            config['init_path'],
+            config['train_model']['model_params']),
+        'model_version': config['model']['model_version'],
         'random_state': 23,
-        'pipe_version': config['feat_selection_params']['pipe_version'],
-        'model_version': config['model']['model_version']
+        'pipe_version': config['feat_selection_params']['pipe_version']        
         }
     
     train_model(**params_)

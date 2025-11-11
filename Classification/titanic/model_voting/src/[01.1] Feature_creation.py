@@ -1,5 +1,5 @@
 import sys
-sys.path.append(r'C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio/Classification/titanic_voting_model')
+sys.path.append(r'Classification/titanic/model_voting')
 import json
 import numpy as np
 import os
@@ -7,15 +7,14 @@ import pandas as pd
 import yaml
 
 # Carregando o arquivo de configuração
-yaml_path = r"Classification\titanic_voting_model\src\config.yaml"
+yaml_path = r"Classification\titanic\model_voting\src\config.yaml"
 with open(yaml_path, "r", encoding="utf-8") as f:
     config = yaml.safe_load(f)
     
 
 def feature_creation(dataset:str, **params):
 
-    df = pd.read_csv(params['raw'])    
-  
+    df = pd.read_csv(params['raw'])     
     print('Run Features')
     df['Ticket'] = df['Ticket'].str.replace(r'[^A-Za-z0-9]', '', regex=True)
     df['Cabin'] = df['Cabin'].str.replace(r'[^A-Za-z0-9]', '', regex=True)
@@ -46,21 +45,28 @@ if __name__ == "__main__":
     
     params_train = {
         'raw':os.path.join(
+            config['init_path'],
             config['data_gathering']['path'],
             config['data_gathering']['train']),
         'processed':os.path.join(
+            config['init_path'],
             config['processed_data']['path'],
             config['processed_data']['train']),
         'reports': config['save_reports']['path_reports']
     }
     params_test = {
         'raw':os.path.join(
+            config['init_path'],
             config['data_gathering']['path'],
             config['data_gathering']['test']),
         'processed':os.path.join(
+            config['init_path'],
             config['processed_data']['path'],
             config['processed_data']['test']),
-        'reports': config['save_reports']['path_reports']
+        'reports': os.path.join(
+            config['init_path'],
+            config['save_reports']['path_reports']
+        )
     }
     
     print('Load Feature Creation')

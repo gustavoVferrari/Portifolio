@@ -1,22 +1,24 @@
+init_path : "C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio"
+
 ## Data gathering
 data_gathering:
-  path: "C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic_voting_model/dados_titanic/raw"
+  path: "Classification/titanic/raw"
   train: "train.csv"
   test: "test.csv"
   competition: "titanic"
 
 processed_data:
-  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic_voting_model/dados_titanic/processed'
+  path: 'Classification/titanic/model_voting/data/processed'
   train: "train.parquet"
   test: "test.parquet"
 
 ## feat engineering
 pipe_feat_eng:
-  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic_voting_model/models'
+  path: 'Classification/titanic/model_voting/models'
 
 ## Feature selection
 feat_selection:
-  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic_voting_model/dados_titanic/processed'
+  path: 'Classification/titanic/model_voting/data/processed'
   input: "train.parquet"
   X_train: "feat_X_train.parquet"
   X_val: "feat_X_val.parquet"
@@ -59,24 +61,23 @@ model_selection:
     - categorical_pipe__Embarked_C
   score: 'accuracy'
 model:
-  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic_voting_model/models'
+  path: 'Classification/titanic/model_voting/models'
   model_version: 1
 
 ## Model
 train_model: 
-  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic_voting_model/dados_titanic/processed'
-  model_params: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic_voting_model/dados_titanic/reports'
+  path: 'Classification/titanic/model_voting/data/processed'
+  model_params: 'Classification/titanic/model_voting/data/reports'
 
 
 ## Save reports
 save_reports:
-  path_reports: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic_voting_model/dados_titanic/reports'
-  path_plot: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic_voting_model/plots'
-
+  path_reports: 'Classification/titanic/model_voting/data/reports'
+  path_plot: 'Classification/titanic/model_voting/plots'
 ## Prediction
 output_predict:
-  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic_voting_model/dados_titanic/processed'
+  path: 'Classification/titanic/model_voting/data/processed'
 
 ## Submission
 submission:
-  path: 'C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio/Classification/titanic_voting_model/dados_titanic/submission'
+  path: 'Classification/titanic/model_voting/data/submission'
