@@ -1,7 +1,7 @@
 import tensorflow as tf
 from tensorflow import keras
 from keras.models import Sequential
-from keras.layers import Dense
+from keras.layers import Dense, Dropout, BatchNormalization
 
 def modelo_classificacao_tf(input_shape):
     """
@@ -17,10 +17,10 @@ def modelo_classificacao_tf(input_shape):
             Dense(16, activation='relu', input_shape=(input_shape,)),
             # Camada oculta
             Dense(16, activation='relu'),
+            BatchNormalization(),
             # Camada oculta
             Dense(16, activation='relu'),
-            # Camada oculta
-            Dense(16, activation='relu'),
+            Dropout(0.1),
             # Camada oculta
             Dense(2, activation='sigmoid'),
         ]

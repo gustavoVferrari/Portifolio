@@ -4,7 +4,7 @@ from feature_engine.imputation import CategoricalImputer
 from feature_engine.encoding import OneHotEncoder, RareLabelEncoder, OrdinalEncoder, WoEEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import MinMaxScaler
+from sklearn.preprocessing import StandardScaler
 from feature_engine.discretisation import DecisionTreeDiscretiser
 
 
@@ -60,7 +60,7 @@ def feat_eng_pipeline(
     
     pipe = make_pipeline(
         preprocessor.set_output(transform="pandas"),
-        # MinMaxScaler().set_output(transform="pandas"),
+        StandardScaler().set_output(transform="pandas"),
         )
     
     return pipe

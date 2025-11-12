@@ -57,9 +57,9 @@ model_selection:
   cols_2_drop:
     - categorical_pipe__Ticket_1p_S
     - categorical_pipe__Embarked_Q
-    - categorical_pipe__Embarked_mod_SQ
-    - categorical_pipe__Embarked_C
-  score: 'accuracy'
+    - categorical_pipe__Ticket_1p_S
+    - categorical_pipe__Ticket_1p_P
+  loss: 'categorical_crossentropy'
 model:
   path: 'Classification/titanic/model_deep_learning/models'
   model_version: 1
@@ -68,7 +68,6 @@ model:
 train_model: 
   path: 'Classification/titanic/model_deep_learning/data/processed'
   model_params: 'Classification/titanic/model_deep_learning/data/reports'
-
 
 ## Save reports
 save_reports:

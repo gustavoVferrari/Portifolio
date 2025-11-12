@@ -1,11 +1,14 @@
 import sys
-sys.path.append(r'Classification/titanic/model_voting')
+sys.path.append(r'Classification/titanic/model_deep_learning')
 import os
-import pickle
+import numpy as np
 import pandas as pd
+import tensorflow as tf
+from tensorflow import keras
 import json
+from keras.utils import to_categorical
 # from sklearn.pipeline import make_pipeline
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, f1_score, recall_score, precision_score, roc_auc_score
 import yaml
 
 import warnings
@@ -13,7 +16,7 @@ warnings.filterwarnings('ignore')
 pd.set_option('display.float_format', '{:.4f}'.format)
 
 
-yaml_path = r"Classification\titanic\model_voting\src\config.yaml"
+yaml_path = r"Classification\titanic\model_deep_learning\src\config.yaml"
 with open(yaml_path, "r", encoding="utf-8") as f:
     config = yaml.safe_load(f)
     
@@ -21,21 +24,21 @@ with open(yaml_path, "r", encoding="utf-8") as f:
 def predict(**params):
     X_val = pd.read_parquet(params['X_val_feat_sel'])
     y_val = pd.read_parquet(params['y_val_feat_sel'])
-    X_val.drop(
-        columns=config['model_selection']['cols_2_drop'],
-        inplace=True) 
-    y_val = y_val.astype('int')      
+    # X_val.drop(
+    #     columns=config['model_selection']['cols_2_drop'],
+    #     inplace=True) 
+    # y_val_tf = to_categorical(y_val)      
  
     model_path = os.path.join(
         params['model'],
-        f"model_{params['model_version']}.pkl")
+        f"model_{params['model_version']}.h5")
     
-    with open(model_path, "rb") as file:
-        model = pickle.load(file)
+    model = keras.models.load_model(model_path)
         
         
-    preds = model.predict(X_val)
-    proba = model.predict_proba(X_val)[:, 1]
+
+    proba = model.predict(X_val)[:, 1]
+    preds = np.where(proba > 0.5, 1, 0)
     
     results = pd.DataFrame(y_val).copy()
     results['preds'] = preds
@@ -43,11 +46,15 @@ def predict(**params):
     
     acc = {}
     acc['accuracy'] = accuracy_score(y_val, preds)
-    
+    acc['f1'] = f1_score(y_val, preds)
+    acc['recall'] = recall_score(y_val, preds)
+    acc['precision'] = precision_score(y_val, preds)
+    acc['roc_auc'] = roc_auc_score(y_val, proba)
+    print(acc)
     
     score_path = os.path.join(
         params['reports'],
-        "accuracy.json")
+        "metrics.json")
     
     with open(score_path, 'w') as arquivo:
         json.dump(acc, arquivo)

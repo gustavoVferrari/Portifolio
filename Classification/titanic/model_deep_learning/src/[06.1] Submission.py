@@ -1,14 +1,15 @@
 import sys
-sys.path.append(r'Classification/titanic/model_voting')
+sys.path.append(r'Classification/titanic/model_deep_learning')
 
 import pandas as pd
 import yaml
 import pickle
 import os
-import json
+import keras
+import numpy as np
 
 # Carregando as configurações do arquivo YAML
-yaml_path = r"Classification\titanic\model_voting\src\config.yaml"
+yaml_path = r"Classification\titanic\model_deep_learning\src\config.yaml"
 with open(yaml_path, "r", encoding="utf-8") as f:
     config = yaml.safe_load(f)
     
@@ -31,21 +32,20 @@ def submission(**params):
     # appply pipe
     df_test_transf = pipe.transform(df_test) 
     
-    df_test_transf.drop(
-        columns = params['cols_2_drop_model'],
-        inplace=True
-    )   
+    # df_test_transf.drop(
+    #     columns = params['cols_2_drop_model'],
+    #     inplace=True
+    # )   
     
     model_path = os.path.join(
         params['model'],
-        f"model_{params['model_version']}.pkl")
-    # open model
-    with open(model_path, "rb") as file:
-        model = pickle.load(file)
+        f"model_{params['model_version']}.h5")
+    
+    model = keras.models.load_model(model_path)   
         
-        
+    pred_proba =  model.predict(df_test_transf)[:,1]    
     # predict    
-    y_test_id.loc[:,f'{params['target'][0]}'] = model.predict(df_test_transf)
+    y_test_id.loc[:,f'{params['target'][0]}'] = np.where(pred_proba > 0.5, 1, 0)
     
     y_test_id.to_csv(
         os.path.join(params['submission'],
