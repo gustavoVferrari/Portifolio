@@ -1,0 +1,1 @@
+{"columns": ["numerical_pipe__Age", "numerical_pipe__SibSp", "numerical_pipe__Fare", "numerical_pipe__IsAlone", "categorical_pipe__Pclass_3", "categorical_pipe__Pclass_2", "categorical_pipe__Sex_male", "categorical_pipe__Cabin_missing"]}
