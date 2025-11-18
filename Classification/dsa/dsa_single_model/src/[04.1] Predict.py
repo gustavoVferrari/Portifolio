@@ -1,5 +1,5 @@
 import sys
-sys.path.append(r'C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio/Classification/dsa_single_model')
+sys.path.append(r'Classification/dsa/dsa_single_model')
 import os
 import pickle
 import pandas as pd
@@ -13,7 +13,7 @@ warnings.filterwarnings('ignore')
 pd.set_option('display.float_format', '{:.4f}'.format)
 
 
-yaml_path = r"Classification\dsa_single_model\src\config.yaml"
+yaml_path = r"Classification\dsa\dsa_single_model\src\config.yaml"
 with open(yaml_path, "r", encoding="utf-8") as f:
     config = yaml.safe_load(f)
     
@@ -46,7 +46,7 @@ def predict(**params):
     
     print(acc)
     score_path = os.path.join(
-        params_['report'],
+        params_['reports'],
         "accuracy.json")
     
     with open(score_path, 'w') as arquivo:
@@ -64,15 +64,25 @@ if __name__ == "__main__":
     
     params_ = {
         'X_val_feat_sel': os.path.join(
+            config['init_path'],
             config['feat_selection']['path'],
             config['feat_selection']['X_val']) ,
         'y_val_feat_sel': os.path.join(
+            config['init_path'],
             config['feat_selection']['path'],
             config['feat_selection']['y_val']),
-        'model': config['model']['path'],
-        'report': config['save_reports']['path_reports'],
-        'predictions': config['output_predict']['path'],
-        'removed_cols': config['save_reports']['path_reports'],
+        'model': os.path.join(
+            config['init_path'],
+            config['model']['path']),
+        'reports': os.path.join(
+            config['init_path'],
+            config['save_reports']['path_reports']),
+        'predictions': os.path.join(
+            config['init_path'],
+            config['output_predict']['path']),
+        'removed_cols': os.path.join(
+            config['init_path'],
+            config['save_reports']['path_reports']),
         'model_version': config['model']['model_version']
         }
     print("Begins predict...")

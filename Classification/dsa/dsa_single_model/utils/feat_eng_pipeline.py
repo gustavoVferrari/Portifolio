@@ -21,13 +21,12 @@ def feat_eng_pipeline(
     median = make_pipeline(
         MeanMedianImputer(
         imputation_method = 'median',
-        variables = num_var_2))
+        variables = num_var_2))   
     
-    
-    
+    log = LogCpTransformer(variables=num_var_1) 
     inputer = KNNImputer()    
     
-    inputer_pipe = make_pipeline(inputer)  
+    inputer_pipe = make_pipeline(inputer, log)  
 
     preprocessor  = ColumnTransformer(
     transformers = [
@@ -38,14 +37,17 @@ def feat_eng_pipeline(
   
     
     pipe = make_pipeline(
-        MedianByYTransformer(feature_cols=['insulina', 'glicose']),
+        KNNImputer().set_output(transform="pandas"),
+        # MedianByYTransformer(feature_cols=['insulina', 'glicose']),
         DecisionTreeDiscretiser(
-            variables=['insulina'],
+            variables=['num_gestacoes'],
             regression=False, 
             scoring='accuracy',
             random_state=23),        
-        Winsorizer(variables=num_var_2, capping_method='iqr'),
-        preprocessor.set_output(transform="pandas")       
+        Winsorizer(variables=num_var_2, capping_method='gaussian', tail = 'both', fold=3),
+        preprocessor.set_output(transform="pandas"),
+        MinMaxScaler().set_output(transform="pandas"),
+              
         )
     
     return pipe

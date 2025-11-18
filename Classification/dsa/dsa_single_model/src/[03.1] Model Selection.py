@@ -1,6 +1,6 @@
 
 import sys
-sys.path.append(r'C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio/Classification/dsa_single_model')
+sys.path.append(r'Classification/dsa/dsa_single_model')
 
 import os
 import pandas as pd
@@ -8,6 +8,7 @@ import json
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.pipeline import make_pipeline
+from sklearn.neighbors import KNeighborsClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import StratifiedKFold
 from sklearn.ensemble import (
@@ -29,7 +30,7 @@ warnings.filterwarnings('ignore')
 pd.set_option('display.float_format', '{:.4f}'.format)
 
 
-yaml_path = r"Classification\dsa_single_model\src\config.yaml"
+yaml_path = r"Classification\dsa\dsa_single_model\src\config.yaml"
 with open(yaml_path, "r", encoding="utf-8") as f:
     config = yaml.safe_load(f)
 
@@ -86,6 +87,12 @@ def model_selection(**params):
         {'mlpclassifier__hidden_layer_sizes':[10, 20, 30],
          'mlpclassifier__activation': ['relu', 'tanh'],
          'mlpclassifier__learning_rate_init':[0.01, 0.001]
+         }
+        ],
+    kn = [
+        KNeighborsClassifier(),
+        {'kneighborsclassifier__n_neighbors':[5, 7, 9, 11],
+         'kneighborsclassifier__weights': ['uniform', 'distance'],
          }
         ],
     hg = [HistGradientBoostingClassifier(),
@@ -246,20 +253,28 @@ if __name__ == "__main__":
      
     params_ = {        
         'X_train_feat_sel': os.path.join(
+             config['init_path'],
             config['feat_selection']['path'],
             config['feat_selection']['X_train']),
         'X_val_feat_sel': os.path.join(
+             config['init_path'],
             config['feat_selection']['path'],
             config['feat_selection']['X_val']),
         'y_train_feat_sel': os.path.join(
+             config['init_path'],
             config['feat_selection']['path'],
             config['feat_selection']['y_train']),
         'y_val_feat_sel': os.path.join(
+             config['init_path'],
             config['feat_selection']['path'],
             config['feat_selection']['y_val']),
-        'cols_2_drop':config['model_selection']['cols_2_drop'],
-        'reports': config['save_reports']['path_reports'],
-        'save_plot': config['save_reports']['path_plot'],
+        'reports': os.path.join(
+            config['init_path'],
+            config['save_reports']['path_reports']),
+        'save_plot': os.path.join(
+            config['init_path'],
+            config['save_reports']['path_plot']),
+        'cols_2_drop':config['model_selection']['cols_2_drop'],        
         'score': config['model_selection']['score'],
         'target':config['feat_selection_params']['target'],
         'random_state': 42,

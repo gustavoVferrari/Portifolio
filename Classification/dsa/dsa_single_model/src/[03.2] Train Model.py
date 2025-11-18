@@ -1,10 +1,11 @@
 import sys
-sys.path.append(r'C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio/Classification/dsa_single_model')
+sys.path.append(r'Classification/dsa/dsa_single_model')
 import os
 import pickle
 import pandas as pd
 import json
 from sklearn.decomposition import PCA
+from sklearn.neighbors import KNeighborsClassifier
 from sklearn.pipeline import make_pipeline
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import (
@@ -25,7 +26,7 @@ warnings.filterwarnings('ignore')
 pd.set_option('display.float_format', '{:.4f}'.format)
 
 
-yaml_path = r"Classification\dsa_single_model\src\config.yaml"
+yaml_path = r"Classification\dsa\dsa_single_model\src\config.yaml"
 with open(yaml_path, "r", encoding="utf-8") as f:
     config = yaml.safe_load(f)
 
@@ -55,6 +56,7 @@ def train_model(**params):
     gb = [GradientBoostingClassifier(random_state=seed_)],
     lr = [LogisticRegression(random_state=seed_)],
     ml = [MLPClassifier(random_state=seed_)],
+    kn = [KNeighborsClassifier()],
     hg = [HistGradientBoostingClassifier()])
     
     
@@ -83,9 +85,9 @@ def train_model(**params):
     
     print("saving model pkl")
     model_path = os.path.join(
-        config['model']['path'],
-        f'model_{params_['model_version']}.pkl')
-    
+        params_['model'],
+        f'model_{params_["model_version"]}.pkl')
+        
     with open(model_path, 'wb') as arquivo:
         pickle.dump(pipeline, arquivo)
     print(f"Model saved")
@@ -105,7 +107,7 @@ def train_model(**params):
     print(dict_score)
     
     metrics_path = os.path.join(
-        params_['report'],
+        params_['reports'],
         'train_model_metrics.json'
     )
     with open(metrics_path, 'w') as arquivo:
@@ -116,20 +118,30 @@ if __name__ == "__main__":
     
     params_ = {        
         'X_train_feat_sel': os.path.join(
+            config['init_path'],
             config['feat_selection']['path'],
             config['feat_selection']['X_train']),
         'y_train_feat_sel': os.path.join(
+            config['init_path'],
             config['feat_selection']['path'],
             config['feat_selection']['y_train']),
         'y_pred_train_path': os.path.join(
+            config['init_path'],
             config['train_model']['path'],
             'y_pred_train.parquet'),
         'y_proba_train_path': os.path.join(
+            config['init_path'],
             config['train_model']['path'],
             'y_proba_train.parquet'),
-        'report': config['save_reports']['path_reports'],
-        'model': config['model']['path'],
-        'model_params': config['train_model']['model_params'],
+        'reports': os.path.join(
+            config['init_path'],
+            config['save_reports']['path_reports']),
+        'model': os.path.join(
+            config['init_path'],
+            config['model']['path']),        
+        'model_params': os.path.join(
+            config['init_path'],
+            config['train_model']['model_params']),
         'random_state': 23,
         'pipe_version': config['feat_selection_params']['pipe_version'],
         'model_version': config['model']['model_version']

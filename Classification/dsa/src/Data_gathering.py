@@ -9,7 +9,7 @@ api = KaggleApi()
 api.authenticate()
 
 # ymal config load
-yaml_path = r"Classification\dsa_single_model\src\config.yaml"
+yaml_path = r"Classification\dsa\src\init_config.yaml"
 with open(yaml_path, "r", encoding="utf-8") as f:
     config = yaml.safe_load(f)
 

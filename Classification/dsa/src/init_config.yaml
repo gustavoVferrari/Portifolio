@@ -1,0 +1,9 @@
+## Data gathering
+data_gathering:
+  init_path : "C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio"
+  path: "Classification/dsa/raw"
+  train: "dataset_treino.csv"
+  test: "dataset_teste.csv"
+  competition: "competicao-dsa-machine-learning-jan-2019"
+
+

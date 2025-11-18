@@ -1,15 +1,14 @@
 import sys
-sys.path.append(r'C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio/Classification/dsa_single_model')
+sys.path.append(r'Classification/dsa/dsa_single_model')
 import json
 import matplotlib.pyplot as plt
 import numpy as np
 import os
 import pandas as pd
 import yaml
-from collections import Counter
 
 # Carregando o arquivo de configuração
-yaml_path = r"Classification\dsa_single_model\src\config.yaml"
+yaml_path = r"Classification\dsa\dsa_single_model\src\config.yaml"
 with open(yaml_path, "r", encoding="utf-8") as f:
     config = yaml.safe_load(f)
     
@@ -48,10 +47,16 @@ if __name__ == "__main__":
     
     params = {      
         'processed':os.path.join(
+            config['init_path'],
             config['processed_data']['path'],
             config['processed_data']['train']),
-        'reports': config['save_reports']['path_reports'],
-        'save_plot': config['save_reports']['path_plot'],
+        'reports': os.path.join(
+            config['init_path'],
+            config['save_reports']['path_reports']),
+        'save_plot': os.path.join(
+            config['init_path'],
+            config['save_reports']['path_plot']
+        )
     }
   
     

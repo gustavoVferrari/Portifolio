@@ -1,5 +1,5 @@
 import sys
-sys.path.append(r'C:\Users\gustavo\Documents\Data Science\08-GitHub\Portifolio/Classification/dsa_single_model')
+sys.path.append(r'Classification/dsa/dsa_single_model')
 
 import os
 import json
@@ -17,7 +17,7 @@ import warnings
 warnings.filterwarnings('ignore')
 
 # open yaml
-yaml_path = r"Classification\dsa_single_model\src\config.yaml"
+yaml_path = r"Classification\dsa\dsa_single_model\src\config.yaml"
 with open(yaml_path, "r", encoding="utf-8") as f:
     config = yaml.safe_load(f)
     
@@ -25,9 +25,8 @@ with open(yaml_path, "r", encoding="utf-8") as f:
 def feature_forward_selection(**params):
     
     X_train = pd.read_parquet(params['X_train_feat_sel'])
-    # X_val = pd.read_parquet(params['X_val_feat_sel'])
     y_train = pd.read_parquet(params['y_train_feat_sel'])
-    # y_val = pd.read_parquet(params['y_val_feat_sel'])
+   
     
     
     sfs = SFS(
@@ -99,19 +98,30 @@ if __name__ == "__main__":
 
     params = {        
         'X_train_feat_sel':os.path.join(
+            config['init_path'],
             config['feat_selection']['path'],
             config['feat_selection']['X_train']),
         'X_val_feat_sel':os.path.join(
+            config['init_path'],
             config['feat_selection']['path'],
             config['feat_selection']['X_val']),
         'y_train_feat_sel': os.path.join(
+            config['init_path'],
             config['feat_selection']['path'],
             config['feat_selection']['y_train']),
         'y_val_feat_sel':os.path.join(
+            config['init_path'],
             config['feat_selection']['path'],
             config['feat_selection']['y_val']),
-        'save_plot':config['save_reports']['path_plot'],
-        'reports':config['save_reports']['path_reports']
+        'reports': os.path.join(
+            config['init_path'],
+            config['init_path'],
+            config['save_reports']['path_reports']),
+        'save_plot': os.path.join(
+            config['init_path'],
+            config['init_path'],
+            config['save_reports']['path_plot'])
+
         }
     
     print("Load feature selection:", params)

@@ -1,7 +1,7 @@
 {
-    "lr": {
-        "class_weight": null,
-        "max_iter": 50,
-        "solver": "newton-cg"
+    "ml": {
+        "activation": "tanh",
+        "hidden_layer_sizes": 20,
+        "learning_rate_init": 0.01
     }
 }
