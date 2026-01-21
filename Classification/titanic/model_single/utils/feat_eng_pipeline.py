@@ -55,7 +55,7 @@ def feat_eng_pipeline(
     
     pipe = make_pipeline(
         preprocessor.set_output(transform="pandas"),
-        # MinMaxScaler().set_output(transform="pandas"),
+        MinMaxScaler().set_output(transform="pandas"),
         )
     
     return pipe

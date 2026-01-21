@@ -1,0 +1,90 @@
+init_path : "C:/Users/gustavo/Documents/Data Science/08-GitHub/Portifolio"
+
+## Data gathering
+data_gathering:  
+  path: "Classification/titanic/raw"
+  train: "train.csv"
+  test: "test.csv"
+  competition: "titanic"
+
+processed_data:
+  path: 'Classification/titanic/model_xgboost/data/processed'
+  train: "train.parquet"
+  test: "test.parquet"
+
+## feat engineering
+pipe_feat_eng:
+  path: 'Classification/titanic/model_xgboost/models'
+
+## Feature selection
+feat_selection:
+  path: 'Classification/titanic/model_xgboost/data/processed'
+  input: "train.parquet"
+  X_train: "feat_X_train.parquet"
+  X_val: "feat_X_val.parquet"
+  y_train: "feat_y_train.parquet"
+  y_val: "feat_y_val.parquet"
+
+feat_selection_params:
+  pipe_version: 1
+  random_state: 23
+  pca_threshold: 0.95
+  val_size: 0.25
+  cols_2_drop:
+    - PassengerId
+    - Name    
+  cat_var:
+    - Pclass    
+    - Sex
+    - Ticket
+    - Cabin
+    - Embarked
+    - Ticket_1p
+    - Cabin_1p
+    - Embarked_mod
+  num_var:
+    - Age
+    - SibSp
+    - Parch
+    - Fare
+    - FamilySize
+    - IsAlone
+  target: 
+    - Survived
+
+## Model selection
+model_selection:  
+  cols_2_drop:
+    - categorical_pipe__Ticket_1p_Rare
+    - categorical_pipe__Ticket_1p_2
+    - categorical_pipe__Cabin_1p_missing
+    - categorical_pipe__Embarked_mod_SQ
+    - categorical_pipe__Embarked_mod_C
+    - categorical_pipe__Pclass_2
+    - numerical_pipe__SibSp
+    - numerical_pipe__Parch 
+    - numerical_pipe__FamilySize
+
+  score: 'roc_auc'
+model:
+  path: 'Classification/titanic/model_xgboost/models'
+  model_version: 1
+
+## Model
+train_model: 
+  path: 'Classification/titanic/model_xgboost/data/processed'
+  model_params: 'Classification/titanic/model_xgboost/data/reports'
+
+
+## Save reports
+save_reports:
+  path_reports: 'Classification/titanic/model_xgboost/data/reports'
+  path_plot: 'Classification/titanic/model_xgboost/plots'
+
+## Prediction
+output_predict:
+  path: 'Classification/titanic/model_xgboost/data/processed'
+
+## Submission
+submission:
+  path: 'Classification/titanic/model_xgboost/data/submission'
