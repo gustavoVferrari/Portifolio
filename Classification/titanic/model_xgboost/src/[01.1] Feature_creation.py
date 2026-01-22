@@ -1,5 +1,7 @@
+model_type = 'model_xgboost'
+
 import sys
-sys.path.append(r'Classification\titanic\model_xgboost')
+sys.path.append(rf'Classification\titanic\{model_type}')
 import json
 import numpy as np
 import os
@@ -7,7 +9,7 @@ import pandas as pd
 import yaml
 
 # Carregando o arquivo de configuração
-yaml_path = r"Classification\titanic\model_xgboost\src\config.yaml"
+yaml_path = rf"Classification\titanic\{model_type}\src\config.yaml"
 with open(yaml_path, "r", encoding="utf-8") as f:
     config = yaml.safe_load(f)
     

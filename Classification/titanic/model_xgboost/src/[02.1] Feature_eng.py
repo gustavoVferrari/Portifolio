@@ -1,5 +1,7 @@
+model_type = 'model_xgboost'
+
 import sys
-sys.path.append(r"Classification\titanic\model_xgboost")
+sys.path.append(rf"Classification\titanic\{model_type}")
 import json
 import pandas as pd
 import yaml
@@ -10,7 +12,7 @@ from sklearn.model_selection import train_test_split
 
 
 # Carregando as configurações do arquivo YAML
-yaml_path = r"Classification\titanic\model_xgboost\src\config.yaml"
+yaml_path = rf"Classification\titanic\{model_type}\src\config.yaml"
 with open(yaml_path, "r", encoding="utf-8") as f:
     config = yaml.safe_load(f)
 
@@ -31,7 +33,8 @@ def run_feature_eng(**params):
         random_state=params['random_state'])
     
     pipe = feat_eng_pipeline(
-        numerical_var=params['num_var'], 
+        numerical_con=params['num_con_var'], 
+        numerical_dis=params['num_dis_var'], 
         categorical_var=params['cat_var'])
     
     print('Feature Eng pipe transform')
@@ -42,7 +45,7 @@ def run_feature_eng(**params):
     print('Save data transform')
     pipe_to_save = os.path.join(
         params['pipe'],
-        f'feat_sel_pipe_{params["version"]}.pkl'
+        f'feat_sel_pipe_{params["pipe_version"]}.pkl'
         )
 
     with open(pipe_to_save, 'wb') as arquivo:
@@ -95,7 +98,8 @@ if __name__ == "__main__":
         'random_state' : config['feat_selection_params']['random_state'],
         'val_size' : config['feat_selection_params']['val_size'],
         'cols_2_drop' : config['feat_selection_params']['cols_2_drop'],
-        'num_var' : config['feat_selection_params']['num_var'],
+        'num_dis_var' : config['feat_selection_params']['num_dis'],
+        'num_con_var' : config['feat_selection_params']['num_con'],
         'cat_var' : config['feat_selection_params']['cat_var'],
         'target' : config['feat_selection_params']['target'],             
         'pipe_version': config['feat_selection_params']['pipe_version'],

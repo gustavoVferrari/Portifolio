@@ -1,5 +1,7 @@
+model_type = 'model_rf'
+
 import sys
-sys.path.append(r"Classification\titanic\model_xgboost")
+sys.path.append(rf"Classification\titanic\{model_type}")
 
 import os
 import json
@@ -17,7 +19,7 @@ import warnings
 warnings.filterwarnings('ignore')
 
 # open yaml
-yaml_path =  r"Classification\titanic\model_xgboost\src\config.yaml"
+yaml_path =  rf"Classification\titanic\{model_type}\src\config.yaml"
 with open(yaml_path, "r", encoding="utf-8") as f:
     config = yaml.safe_load(f)
     

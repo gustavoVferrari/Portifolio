@@ -42,11 +42,12 @@ feat_selection_params:
     - Ticket_1p
     - Cabin_1p
     - Embarked_mod
-  num_var:
-    - Age
+  num_con:
+    - Age    
+    - Fare
+  num_dis:
     - SibSp
     - Parch
-    - Fare
     - FamilySize
     - IsAlone
   target: 
@@ -61,9 +62,9 @@ model_selection:
     - categorical_pipe__Embarked_mod_SQ
     - categorical_pipe__Embarked_mod_C
     - categorical_pipe__Pclass_2
-    - numerical_pipe__SibSp
-    - numerical_pipe__Parch 
-    - numerical_pipe__FamilySize
+    - numerical_pipe_dis__SibSp
+    - numerical_pipe_dis__Parch 
+    - numerical_pipe_dis__FamilySize
 
   score: 'roc_auc'
 model:
