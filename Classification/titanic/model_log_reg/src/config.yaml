@@ -59,6 +59,8 @@ model_selection:
     - numerical_pipe__SibSp
     - numerical_pipe__Parch 
     - numerical_pipe__FamilySize
+    - numerical_pipe__IsAlone
+    - categorical_pipe__Pclass_2
     - categorical_pipe__Embarked_mod_C
     - categorical_pipe__Embarked_mod_SQ
     - categorical_pipe__Embarked_C
