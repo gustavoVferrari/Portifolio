@@ -42,29 +42,33 @@ feat_selection_params:
     - Ticket_1p
     - Cabin_1p
     - Embarked_mod
-  num_var:
-    - Age
+  num_dis:    
     - SibSp
-    - Parch
-    - Fare
+    - Parch    
     - FamilySize
     - IsAlone
+  num_con:
+    - Age
+    - Fare
   target: 
     - Survived
 
 ## Model selection
 model_selection:  
-  cols_2_drop:
+  cols_2_drop:    
+    - numerical_pipe_dis__SibSp
+    - numerical_pipe_dis__Parch
+    - numerical_pipe_con__Fare
+    - numerical_pipe_dis__FamilySize
+    - numerical_pipe_dis__IsAlone
     - categorical_pipe__Ticket_1p_Rare
-    - numerical_pipe__SibSp
-    - numerical_pipe__Parch 
-    - numerical_pipe__FamilySize
-    - numerical_pipe__IsAlone
     - categorical_pipe__Pclass_2
-    - categorical_pipe__Embarked_mod_C
-    - categorical_pipe__Embarked_mod_SQ
+    - categorical_pipe__Ticket_1p_2
     - categorical_pipe__Embarked_C
-  score: 'accuracy'
+    - categorical_pipe__Embarked_mod_SQ
+    - categorical_pipe__Embarked_mod_C
+  
+  score: 'roc_auc'
 model:
   path: 'Classification/titanic/model_log_reg/models'
   model_version: 'log_reg'

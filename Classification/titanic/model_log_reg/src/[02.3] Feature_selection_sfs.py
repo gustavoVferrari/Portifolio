@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from scipy import stats
 from sklearn.pipeline import make_pipeline
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
 import yaml
 from mlxtend.feature_selection import SequentialFeatureSelector as SFS
 
@@ -28,11 +28,11 @@ def feature_forward_selection(**params):
     y_train = pd.read_parquet(params['y_train_feat_sel'])    
     
     sfs = SFS(
-        estimator=RandomForestClassifier(random_state=23),
+        estimator=LogisticRegression(max_iter=500),
         k_features=X_train.shape[1]-1,  
         forward=True,  
         floating=False,  
-        scoring='accuracy',
+        scoring='roc_auc',
         cv=5, 
         n_jobs=-1
         )    

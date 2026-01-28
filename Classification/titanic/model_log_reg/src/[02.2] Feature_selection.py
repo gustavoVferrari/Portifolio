@@ -1,5 +1,7 @@
+model_type = "model_log_reg"
+
 import sys
-sys.path.append(r"Classification\titanic\model_log_reg")
+sys.path.append(rf"Classification\titanic\{model_type}")
 
 import os
 import json
@@ -12,7 +14,7 @@ from sklearn.feature_selection import mutual_info_classif
 import yaml
 
 # open yaml
-yaml_path = r"Classification\titanic\model_log_reg\src\config.yaml"
+yaml_path = rf"Classification\titanic\{model_type}\src\config.yaml"
 with open(yaml_path, "r", encoding="utf-8") as f:
     config = yaml.safe_load(f)
     
@@ -45,9 +47,9 @@ def feature_selection_univariate(**params):
     chi_sorted = chi.sort_values(ascending=True)
     
     # Plot
-    plt.figure(figsize=(20, 5))
+    plt.figure(figsize=(20, 10))
     plt.bar(chi_sorted.index, chi_sorted.values, color="skyblue")
-    plt.xticks(rotation=45)
+    plt.xticks(rotation=90)
     plt.axhline(y=0.05, color='r', linestyle='-')  
     plt.ylabel("p value")
     plt.title("Feature importance based on chi-square test")
@@ -94,7 +96,7 @@ def feature_selection_univariate(**params):
     mi.index = X_train.columns
     mi.sort_values(ascending=False, inplace=True)
     
-    mi.plot.bar(rot=45, figsize=(20, 5))
+    mi.plot.bar(rot=90, figsize=(20, 10))
     save_path = os.path.join(
         params['save_plot'],
         "feat_importance_mutual_information.png"

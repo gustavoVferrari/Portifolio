@@ -1,6 +1,6 @@
 {
     "lr": {
-        "C": 0.1,
-        "solver": "saga"
+        "C": 100,
+        "solver": "liblinear"
     }
 }

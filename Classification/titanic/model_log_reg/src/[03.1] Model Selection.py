@@ -34,6 +34,7 @@ def model_selection(**params):
     y_train = pd.read_parquet(params_['y_train_feat_sel'])
     y_val = pd.read_parquet(params_['y_val_feat_sel']) 
     
+        
     X_train.drop(
         columns=config['model_selection']['cols_2_drop'],
         inplace=True)

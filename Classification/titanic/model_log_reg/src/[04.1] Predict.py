@@ -1,4 +1,3 @@
-
 model_type = 'model_log_reg'
 
 import sys
@@ -22,6 +21,7 @@ with open(yaml_path, "r", encoding="utf-8") as f:
 def predict(**params):
     X_val = pd.read_parquet(params['X_val_feat_sel'])
     y_val = pd.read_parquet(params['y_val_feat_sel'])
+    
     X_val.drop(
         columns=config['model_selection']['cols_2_drop'],
         inplace=True) 

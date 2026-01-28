@@ -20,9 +20,11 @@ def submission(**params):
     print('Data submission')
     df_test = pd.read_parquet(params['test_data'])    
     y_test_id = df_test[['PassengerId']].copy()
+    
     df_test.drop(
         columns=params['cols_2_drop_feat_sel'], 
         inplace=True)
+    
     # read pipe
     pipe_path = os.path.join(
         params['model'],
@@ -42,15 +44,9 @@ def submission(**params):
         params['model'],
         f"model_{params['model_version']}.pkl")
     # open model
+    
     with open(model_path, "rb") as file:
         model = pickle.load(file)
-        
-    # report_path = os.path.join(
-    #     params['report'],
-    #     "report.json")
-    # # get cols to predict
-    # with open(report_path, "rb") as file:
-    #     report = json.load(file)
         
     # predict    
     y_test_id.loc[:,f'{params['target'][0]}'] = model.predict(df_test_transf)

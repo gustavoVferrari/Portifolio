@@ -1,0 +1,1 @@
+{"PassengerId":"PassengerId","Survived":"Survived","Pclass":"Pclass","Name":"Name","Sex":"Sex","Age":"Age","SibSp":"SibSp","Parch":"Parch","Ticket":"Ticket","Fare":"Fare","Cabin":"Cabin","Embarked":"Embarked","Ticket_1p":"Ticket_1p","Cabin_1p":"Cabin_1p","Embarked_mod":"Embarked_mod","FamilySize":"FamilySize","IsAlone":"IsAlone"}

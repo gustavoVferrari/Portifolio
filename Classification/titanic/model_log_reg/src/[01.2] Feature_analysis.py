@@ -1,5 +1,7 @@
+model_type = "model_log_reg"
+
 import sys
-sys.path.append(r"Classification\titanic\model_log_reg")
+sys.path.append(rf"Classification\titanic\{model_type}")
 import json
 import matplotlib.pyplot as plt
 import numpy as np
@@ -9,28 +11,32 @@ import yaml
 from collections import Counter
 
 # Carregando o arquivo de configuração
-yaml_path = r"Classification\titanic\model_log_reg\src\config.yaml"
+yaml_path = rf"Classification\titanic\{model_type}\src\config.yaml"
 with open(yaml_path, "r", encoding="utf-8") as f:
     config = yaml.safe_load(f)
     
-
+# define funcao para analise de features
 def feature_analysis(**params):
 
     df = pd.read_parquet(params['processed'])       
    
+   # missing data plot
     df.isna().mean().plot.bar(title='missing data')
     path_save = os.path.join(params['save_plot'], 'missing_data.png')
     plt.savefig(path_save, dpi=300, bbox_inches="tight")
     plt.close() 
 
+    # feature cols type
     categorical_col = list(df.select_dtypes(include=['category','object', 'bool']).columns)    
     numerical_col = list(df.select_dtypes(include=['number']).columns)
 
     dict_var_type = dict(categorical_var = categorical_col,
-                         numerical_var = numerical_col)
+                         numerical_var = numerical_col)       
+    
     with open(os.path.join(params['reports'], 'cols_type.json'), 'w') as arquivo:
         json.dump(dict_var_type, arquivo)
     
+    # cardinality 
     dict_cardinality = {}
     for col in categorical_col:
         dict_cardinality[col] =  str(df[col].nunique())        
